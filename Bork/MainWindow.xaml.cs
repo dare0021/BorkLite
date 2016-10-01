@@ -26,6 +26,9 @@ namespace Bork
         {
             InitializeComponent();
 
+            RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
+            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+
             Task.Run(() =>
             {
                 DateTime timeKeeper = DateTime.Now;
@@ -40,14 +43,23 @@ namespace Bork
             });
         }
 
+        private double dScale = 0.1;
         private void someTask(double dt)
         {
             System.Console.Out.WriteLine(dt);
             this.Dispatcher.Invoke(() =>
             {
-                var rot = aruImage.RenderTransform as RotateTransform;
-                rot.Angle += dt * 5;
-                aruLabel.Content = rot.Angle;
+                var rot = aruImage.getRotation();
+                aruImage.setRotation(rot + 5);
+                aruLabel.Content = rot;
+                
+                var xScale = aruImage.getScale().Item1;
+                var yScale = aruImage.getScale().Item2;
+                xScale += dScale;
+                yScale += dScale;
+                if (xScale > 10 || xScale < 1)
+                    dScale *= -1;
+                aruImage.setScale(xScale, yScale);
             });
         }
     }
