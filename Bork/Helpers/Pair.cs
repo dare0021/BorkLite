@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bork.Helpers
 {
-    class Pair<T> 
+    public class Pair<T> 
     {
         public T X { get; set; }
         public T Y { get; set; }

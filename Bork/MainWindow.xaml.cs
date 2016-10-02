@@ -15,12 +15,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Bork.Controls;
+using Bork.Helpers;
 
 namespace Bork
 {
     public partial class MainWindow : Window
     {
         private bool mouseDown = false;
+        GameDisplayObject beingDragged;
 
         public MainWindow()
         {
@@ -83,6 +85,15 @@ namespace Bork
             //aruAnimation(dt);
         }
 
+        public Vec2 screenToWindow(Vec2 v)
+        {
+            return screenToWindow(v.X, v.Y);
+        }
+        public Vec2 screenToWindow(double x, double y)
+        {
+            return new Vec2(x - Width / 2, y - Height / 2);
+        }
+
         double dScale = 0.1;
         private void aruAnimation(double dt)
         {
@@ -111,12 +122,21 @@ namespace Bork
         {
             if (!mouseDown)
                 return;
-            var pt = e.GetPosition(this);
+            var ptOnScreen = new Vec2(e.GetPosition(this));
+            var ptInGame = screenToWindow(ptOnScreen);
+            beingDragged.setPosition(ptInGame.X, ptInGame.Y);
         }
 
         private void grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseDown = true;
+            foreach (var ctrl in grid.Children)
+            {
+                if (!(ctrl is GameDisplayObject))
+                    continue;
+                beingDragged = (GameDisplayObject)ctrl;
+                break;
+            }
         }
 
         private void grid_MouseUp(object sender, MouseButtonEventArgs e)

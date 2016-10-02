@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bork.Helpers
 {
-    class Vec2
+    public class Vec2
     {
         public double X { get; set; }
         public double Y { get; set; }
