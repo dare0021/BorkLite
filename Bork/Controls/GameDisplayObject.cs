@@ -60,5 +60,23 @@ namespace Bork.Controls
         }
         public double MaxSpeed { get; set; }
         public double MaxRotationSpeed { get; set; }
+
+        protected LinkedList<string> tags;
+
+        public bool isInvulnerable()
+        {
+            return tags.Contains("invulnerable");
+        }
+        public void isInvulnerable(bool v)
+        {
+            if (tags.Contains("invulnerable") && !v)
+            {
+                tags.Remove("invulnerable");
+            }
+            else if (!tags.Contains("invulnerable") && v)
+            {
+                tags.AddLast("invulnerable");
+            }
+        }
     }
 }

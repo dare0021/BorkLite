@@ -139,7 +139,7 @@ namespace Bork.Controls
             return (v - getPosition()).getLength() < getRadius();
         }
 
-        public RadiusMode radiusType;
+        protected RadiusMode radiusType;
         public RadiusMode RadiusType { get; set; }
     }
 }
