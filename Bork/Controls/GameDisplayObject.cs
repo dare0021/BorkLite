@@ -27,7 +27,7 @@ namespace Bork.Controls
             setRotation(rotation + RotationSpeed * dt);
         }
 
-        protected double speed, rotationSpeed, maxSpeed, maxRotationSpeed;
+        protected double speed, rotationSpeed, maxSpeed, maxRotationSpeed, hp, maxHP;
         public double Speed
         {
             get
@@ -58,8 +58,21 @@ namespace Bork.Controls
                 rotationSpeed = value;
             }
         }
+        public double HP
+        {
+            get
+            {
+                var retval = hp < 0 ? 0 : hp;
+                return retval;
+            }
+            set
+            {
+                hp = value > MaxHP ? MaxHP : value;
+            }
+        }
         public double MaxSpeed { get; set; }
         public double MaxRotationSpeed { get; set; }
+        public double MaxHP { get; set; }
 
         protected LinkedList<string> tags;
 
