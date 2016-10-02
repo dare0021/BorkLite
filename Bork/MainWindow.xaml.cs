@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Bork.Controls;
 
 namespace Bork
 {
@@ -21,7 +22,7 @@ namespace Bork
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-us");
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
@@ -29,6 +30,17 @@ namespace Bork
 
             //var lblpos = aruLabel.TransformToAncestor((Visual)aruLabel.Parent).Transform(new Point(0, 0));
             aruImage.setSource(Bork.Properties.Resources.DummyImg1);
+
+            var rng = new Random();
+            for (int i=0; i<1000; i++)
+            {
+                var iter = new RichImage();
+                iter.setSource(Bork.Properties.Resources.DummyImg1);
+                iter.setPosition(rng.Next((int)(Width / -2), (int)(Width/2)),
+                                 rng.Next((int)(Height / -2), (int)(Height/2)));
+                iter.setSize(iter.Source.Width / 10, iter.Source.Height / 10);
+                grid.Children.Add(iter);
+            }
 
             Task.Run(() =>
             {
@@ -55,14 +67,21 @@ namespace Bork
             System.Console.Out.WriteLine(dt);
             Dispatcher.Invoke(() =>
             {
-                var rot = aruImage.getRotation();
-                aruImage.setRotation(rot + 5);
-                
-                var scale = aruImage.getScale();
-                scale += dScale;
-                if (scale.X > 15 || scale.X < 1)
-                    dScale *= -1;
-                aruImage.setScale(scale);
+                foreach (var ctrl in grid.Children)
+                {
+                    if (!(ctrl is RichImage))
+                        continue;
+                    var ri = (RichImage)ctrl;
+                    var rot = ri.getRotation();
+                    ri.setRotation(rot + 5);
+
+                    var aruScale = aruImage.getScale().X;
+                    if (aruScale > 5 || aruScale < 1)
+                        dScale *= -1;
+                    var scale = ri.getScale();
+                    scale += dScale;
+                    ri.setScale(scale);
+                }
             });
         }
     }

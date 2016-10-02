@@ -19,9 +19,10 @@ namespace Bork.Controls
         private TranslateTransform translateTransform;
         private SkewTransform skewTransform;
 
-        public RichImage() 
+        public RichImage()
         {
             RenderTransformOrigin = new Point(0.5, 0.5);
+
             scaleTransform = new ScaleTransform();
             scaleTransform.ScaleY = 1;
             scaleTransform.ScaleX = 1;
@@ -36,13 +37,13 @@ namespace Bork.Controls
             skewTransform = new SkewTransform();
             skewTransform.AngleX = 0;
             skewTransform.AngleY = 0;
-            
+
             TransformGroup myTransformGroup = new TransformGroup();
             myTransformGroup.Children.Add(scaleTransform);
             myTransformGroup.Children.Add(rotateTransform);
             myTransformGroup.Children.Add(translateTransform);
             myTransformGroup.Children.Add(skewTransform);
-            
+
             RenderTransform = myTransformGroup;
         }
 
@@ -75,6 +76,19 @@ namespace Bork.Controls
         public void setRotation(double v)
         {
             rotateTransform.Angle = v;
+        }
+        public Vec2 getSize()
+        {
+            return new Vec2(Width, Height);
+        }
+        public void setSize(Vec2 v)
+        {
+            setSize(v.X, v.Y);
+        }
+        public void setSize(double x, double y)
+        {
+            Width = x;
+            Height = y;
         }
         public Vec2 getScale()
         {
