@@ -70,8 +70,8 @@ namespace Bork.Controls
 
         public double getRadius()
         {
-            var x = Width * getScale().X;
-            var y = Height * getScale().Y;
+            var x = Width * getScale().X / 2;
+            var y = Height * getScale().Y / 2;
 
             if (radiusType == RadiusMode.Avg)
                 return (x + y) / 2;
