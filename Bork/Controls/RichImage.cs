@@ -70,15 +70,16 @@ namespace Bork.Controls
 
         public double getRadius()
         {
-            var r = Width * getScale().X;
+            var x = Width * getScale().X;
             var y = Height * getScale().Y;
 
-            if (RadiusType == RadiusMode.Max && r < y)
+            if (radiusType == RadiusMode.Avg)
+                return (x + y) / 2;
+            if (RadiusType == RadiusMode.Max && x < y)
                 return y;
-            if (radiusType == RadiusMode.Min && r > y)
+            if (radiusType == RadiusMode.Min && x > y)
                 return y;
-            //Avg
-            return (r + y)/2;
+            return x;
         }
 
         public double getRotation()
