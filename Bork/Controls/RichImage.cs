@@ -116,5 +116,20 @@ namespace Bork.Controls
             translateTransform.X = x;
             translateTransform.Y = y;
         }
+        public bool containsPoint(Vec2 v)
+        {
+            var pt = PointFromScreen(new Point(v.X, v.Y));
+            // might not play nice with scale
+            // if so (if not done automatically), just use getScale() to adjust the function
+            if (pt.X < Width / 2)
+                return false;
+            if (pt.X > Width / 2)
+                return false;
+            if (pt.Y < Height / 2)
+                return false;
+            if (pt.Y > Height / 2)
+                return false;
+            return true;
+        }
     }
 }

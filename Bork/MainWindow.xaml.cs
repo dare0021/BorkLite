@@ -20,6 +20,8 @@ namespace Bork
 {
     public partial class MainWindow : Window
     {
+        private bool mouseDown = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -103,6 +105,23 @@ namespace Bork
                     ri.setScale(scale);
                 }
             });
+        }
+
+        private void grid_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!mouseDown)
+                return;
+            var pt = e.GetPosition(this);
+        }
+
+        private void grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mouseDown = true;
+        }
+
+        private void grid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            mouseDown = false;
         }
     }
 }
