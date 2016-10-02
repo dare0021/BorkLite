@@ -61,6 +61,24 @@ namespace Bork.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to images/test1.png.
+        /// </summary>
+        public static string DummyImg1 {
+            get {
+                return ResourceManager.GetString("DummyImg1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to images/test2.png.
+        /// </summary>
+        public static string DummyImg2 {
+            get {
+                return ResourceManager.GetString("DummyImg2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to images/image.jpg.
         /// </summary>
         public static string TestAru {

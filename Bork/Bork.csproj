@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,9 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\RichLabel.cs" />
     <Compile Include="Helpers\Pair.cs" />
     <Compile Include="Helpers\Vec2.cs" />
-    <Compile Include="RichImage.cs" />
+    <Compile Include="Controls\RichImage.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,6 +103,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\image.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DummyImage1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\test1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\test2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -120,4 +120,10 @@
   <data name="TestAru" xml:space="preserve">
     <value>images/image.jpg</value>
   </data>
+  <data name="DummyImg1" xml:space="preserve">
+    <value>images/test1.png</value>
+  </data>
+  <data name="DummyImg2" xml:space="preserve">
+    <value>images/test2.png</value>
+  </data>
 </root>
