@@ -37,7 +37,6 @@ namespace Bork.Controls
             }
             set
             {
-                Console.Out.WriteLine("SS " + value);
                 if (value > MaxSpeed)
                 {
                     value = MaxSpeed;
@@ -50,7 +49,6 @@ namespace Bork.Controls
                 {
                     speed = value;
                 }
-                Console.Out.WriteLine("SO " + speed);
             }
         }
         private double rotationSpeed;

@@ -121,8 +121,6 @@ namespace Bork.Controls
         }
         public void setPosition(double x, double y)
         {
-            Console.Out.WriteLine("OLDPOS " + getPosition().X + " " + getPosition().Y);
-            Console.Out.WriteLine("NEWPOS " + x + " " + y);
             translateTransform.X = x;
             translateTransform.Y = y;
         }
