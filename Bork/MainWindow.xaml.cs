@@ -53,13 +53,11 @@ namespace Bork
                 aruImage.setRotation(rot + 5);
                 aruLabel.Content = rot;
                 
-                var xScale = aruImage.getScale().Item1;
-                var yScale = aruImage.getScale().Item2;
-                xScale += dScale;
-                yScale += dScale;
-                if (xScale > 10 || xScale < 1)
+                var scale = aruImage.getScale();
+                scale += dScale;
+                if (scale.X > 10 || scale.X < 1)
                     dScale *= -1;
-                aruImage.setScale(xScale, yScale);
+                aruImage.setScale(scale);
             });
         }
     }
