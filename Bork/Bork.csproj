@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\GameDisplayObject.cs" />
     <Compile Include="Controls\RichLabel.cs" />
     <Compile Include="Helpers\Pair.cs" />
     <Compile Include="Helpers\Vec2.cs" />

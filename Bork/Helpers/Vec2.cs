@@ -17,6 +17,12 @@ namespace Bork.Helpers
             Y = v.Item2;
         }
 
+        public Vec2(System.Windows.Point p)
+        {
+            X = p.X;
+            Y = p.Y;
+        }
+
         public Vec2(Pair<double> v)
         {
             X = v.X;

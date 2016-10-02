@@ -22,17 +22,16 @@ namespace Bork
     {
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
 
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-us");
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-
-            //var lblpos = aruLabel.TransformToAncestor((Visual)aruLabel.Parent).Transform(new Point(0, 0));
+            
             aruImage.setSource(Bork.Properties.Resources.DummyImg1);
 
             var rng = new Random();
-            for (int i=0; i<3; i++)
+            for (int i=0; i<0; i++)
             {
                 var iter = new RichImage();
                 iter.setSource(Bork.Properties.Resources.DummyImg2);
@@ -41,6 +40,14 @@ namespace Bork
                 iter.setSize(iter.Source.Width / 10, iter.Source.Height / 10);
                 grid.Children.Add(iter);
             }
+            var iter2 = new GameDisplayObject();
+            iter2.setSource(Bork.Properties.Resources.DummyImg2);
+            iter2.setPosition(rng.Next((int)(Width / -2), (int)(Width / 2)),
+                             rng.Next((int)(Height / -2), (int)(Height / 2)));
+            iter2.setSize(iter2.Source.Width / 10, iter2.Source.Height / 10);
+            grid.Children.Add(iter2);
+            iter2.Speed = 5;
+            iter2.RotationSpeed = 5;
 
             Task.Run(() =>
             {
@@ -60,7 +67,16 @@ namespace Bork
 
         protected void Update(double dt)
         {
-            aruAnimation(dt);
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var ctrl in grid.Children)
+                {
+                    if (!(ctrl is GameDisplayObject))
+                        continue;
+                    ((GameDisplayObject)ctrl).Update(dt);
+                }
+            });
+            //aruAnimation(dt);
         }
 
         double dScale = 0.1;
