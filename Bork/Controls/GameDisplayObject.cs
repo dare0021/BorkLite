@@ -14,7 +14,8 @@ namespace Bork.Controls
     {
         public GameDisplayObject()
         {
-
+            MaxSpeed = double.MaxValue;
+            MaxRotationSpeed = double.MaxValue;
         }
 
         public void Update(double dt)
@@ -27,7 +28,7 @@ namespace Bork.Controls
             setRotation(rotation + RotationSpeed * dt);
         }
 
-        protected double speed, rotationSpeed, maxSpeed, maxRotationSpeed, hp, maxHP;
+        private double speed;
         public double Speed
         {
             get
@@ -36,13 +37,23 @@ namespace Bork.Controls
             }
             set
             {
+                Console.Out.WriteLine("SS " + value);
                 if (value > MaxSpeed)
+                {
                     value = MaxSpeed;
-                if (value < -MaxSpeed)
+                }
+                else if (value < -MaxSpeed)
+                {
                     value = -MaxSpeed;
-                speed = value;
+                }
+                else
+                {
+                    speed = value;
+                }
+                Console.Out.WriteLine("SO " + speed);
             }
         }
+        private double rotationSpeed;
         public double RotationSpeed
         {
             get
@@ -58,6 +69,7 @@ namespace Bork.Controls
                 rotationSpeed = value;
             }
         }
+        private double hp;
         public double HP
         {
             get

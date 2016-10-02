@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace Bork.Controls
 {
-    class RichImage : Image
+    public class RichImage : Image
     {
         private ScaleTransform scaleTransform;
         private RotateTransform rotateTransform;
@@ -46,12 +46,7 @@ namespace Bork.Controls
 
             RenderTransform = myTransformGroup;
 
-            RadiusType = RadiusMode.Min;
-        }
-
-        public enum RadiusMode
-        {
-            Min, Avg, Max
+            RadiusType = Common.RadiusMode.Min;
         }
 
         /// <summary>
@@ -73,11 +68,11 @@ namespace Bork.Controls
             var x = Width * getScale().X / 2;
             var y = Height * getScale().Y / 2;
 
-            if (radiusType == RadiusMode.Avg)
+            if (radiusType == Common.RadiusMode.Avg)
                 return (x + y) / 2;
-            if (RadiusType == RadiusMode.Max && x < y)
+            if (RadiusType == Common.RadiusMode.Max && x < y)
                 return y;
-            if (radiusType == RadiusMode.Min && x > y)
+            if (radiusType == Common.RadiusMode.Min && x > y)
                 return y;
             return x;
         }
@@ -126,6 +121,8 @@ namespace Bork.Controls
         }
         public void setPosition(double x, double y)
         {
+            Console.Out.WriteLine("OLDPOS " + getPosition().X + " " + getPosition().Y);
+            Console.Out.WriteLine("NEWPOS " + x + " " + y);
             translateTransform.X = x;
             translateTransform.Y = y;
         }
@@ -139,7 +136,7 @@ namespace Bork.Controls
             return (v - getPosition()).getLength() < getRadius();
         }
 
-        protected RadiusMode radiusType;
-        public RadiusMode RadiusType { get; set; }
+        protected Common.RadiusMode radiusType;
+        public Common.RadiusMode RadiusType { get; set; }
     }
 }

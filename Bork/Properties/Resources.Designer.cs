@@ -61,6 +61,15 @@ namespace Bork.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to videos/deathDummy.avi.
+        /// </summary>
+        public static string DeathAnimationDummy {
+            get {
+                return ResourceManager.GetString("DeathAnimationDummy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to images/test1.png.
         /// </summary>
         public static string DummyImg1 {

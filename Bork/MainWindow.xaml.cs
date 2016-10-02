@@ -94,6 +94,13 @@ namespace Bork
             return new Vec2(x - Width / 2, y - Height / 2);
         }
 
+        public RichImage displaySingleUseVideo(String path, Vec2 position, Vec2 size, double rotation)
+        {
+            //TODO: implement the gif-like thing in RichImage
+            // MediaElement is a no go as it ignores the alpha channel
+            return null;
+        }
+
         double dScale = 0.1;
         private void aruAnimation(double dt)
         {
