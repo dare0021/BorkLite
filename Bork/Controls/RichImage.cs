@@ -45,6 +45,13 @@ namespace Bork.Controls
             myTransformGroup.Children.Add(skewTransform);
 
             RenderTransform = myTransformGroup;
+
+            RadiusType = RadiusMode.Min;
+        }
+
+        public enum RadiusMode
+        {
+            Min, Avg, Max
         }
 
         /// <summary>
@@ -61,12 +68,17 @@ namespace Bork.Controls
             Source = new BitmapImage(new Uri(@"pack://application:,,,/Bork;component/" + pathInApplication, UriKind.Absolute));
         }
 
-        private void setSource(System.Drawing.Icon icon)
+        public double getRadius()
         {
-            Source = Imaging.CreateBitmapSourceFromHIcon(
-                icon.Handle,
-                new Int32Rect(0, 0, icon.Width, icon.Height),
-                BitmapSizeOptions.FromEmptyOptions());
+            var r = Width * getScale().X;
+            var y = Height * getScale().Y;
+
+            if (RadiusType == RadiusMode.Max && r < y)
+                return y;
+            if (radiusType == RadiusMode.Min && r > y)
+                return y;
+            //Avg
+            return (r + y)/2;
         }
 
         public double getRotation()
@@ -116,20 +128,17 @@ namespace Bork.Controls
             translateTransform.X = x;
             translateTransform.Y = y;
         }
+        /// <summary>
+        /// Uses a circle using getRadius()
+        /// </summary>
+        /// <param name="v">Game coordinates</param>
+        /// <returns></returns>
         public bool containsPoint(Vec2 v)
         {
-            var pt = PointFromScreen(new Point(v.X, v.Y));
-            // might not play nice with scale
-            // if so (if not done automatically), just use getScale() to adjust the function
-            if (pt.X < Width / 2)
-                return false;
-            if (pt.X > Width / 2)
-                return false;
-            if (pt.Y < Height / 2)
-                return false;
-            if (pt.Y > Height / 2)
-                return false;
-            return true;
+            return (v - getPosition()).getLength() < getRadius();
         }
+
+        public RadiusMode radiusType;
+        public RadiusMode RadiusType { get; set; }
     }
 }

@@ -125,6 +125,7 @@ namespace Bork
             var ptOnScreen = new Vec2(e.GetPosition(this));
             var ptInGame = screenToWindow(ptOnScreen);
             beingDragged.setPosition(ptInGame.X, ptInGame.Y);
+            Console.Out.WriteLine(beingDragged.containsPoint(aruImage.getPosition()));
         }
 
         private void grid_MouseDown(object sender, MouseButtonEventArgs e)

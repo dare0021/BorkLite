@@ -35,6 +35,11 @@ namespace Bork.Helpers
             Y = y;
         }
 
+        public double getLength()
+        {
+            return Math.Sqrt(X * X + Y * Y);
+        }
+
         public static Vec2 operator +(Vec2 v1, Vec2 v2)
         {
             return new Vec2(v1.X + v2.X, v1.Y + v2.Y);
