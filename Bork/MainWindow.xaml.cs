@@ -124,19 +124,29 @@ namespace Bork
                 return;
             var ptOnScreen = new Vec2(e.GetPosition(this));
             var ptInGame = screenToWindow(ptOnScreen);
-            beingDragged.setPosition(ptInGame.X, ptInGame.Y);
-            Console.Out.WriteLine(beingDragged.containsPoint(aruImage.getPosition()));
+            if (beingDragged != null)
+            {
+                beingDragged.setPosition(ptInGame.X, ptInGame.Y);
+                Console.Out.WriteLine(beingDragged.containsPoint(aruImage.getPosition()));
+            }
         }
 
         private void grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseDown = true;
+            var ptOnScreen = new Vec2(e.GetPosition(this));
+            var ptInGame = screenToWindow(ptOnScreen);
+            beingDragged = null;
             foreach (var ctrl in grid.Children)
             {
                 if (!(ctrl is GameDisplayObject))
                     continue;
-                beingDragged = (GameDisplayObject)ctrl;
-                break;
+                var gdo = ctrl as GameDisplayObject;
+                if (gdo.containsPoint(ptInGame))
+                {
+                    beingDragged = (GameDisplayObject)ctrl;
+                    break;
+                }
             }
         }
 
