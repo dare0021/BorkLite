@@ -68,6 +68,8 @@ namespace Bork.Controls
             set
             {
                 hp = value > MaxHP ? MaxHP : value;
+                if (hp < 0)
+                    justDied(value);
             }
         }
         public double MaxSpeed { get; set; }
@@ -90,6 +92,15 @@ namespace Bork.Controls
             {
                 tags.AddLast("invulnerable");
             }
+        }
+
+        /// <summary>
+        /// Run when the HP first reaches < 0
+        /// </summary>
+        /// <param name="dHP">The hp modifier that resulted in this function being called</param>
+        protected void justDied(double dHP)
+        {
+
         }
     }
 }
