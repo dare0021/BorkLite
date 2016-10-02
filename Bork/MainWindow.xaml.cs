@@ -32,10 +32,10 @@ namespace Bork
             aruImage.setSource(Bork.Properties.Resources.DummyImg1);
 
             var rng = new Random();
-            for (int i=0; i<1000; i++)
+            for (int i=0; i<3; i++)
             {
                 var iter = new RichImage();
-                iter.setSource(Bork.Properties.Resources.DummyImg1);
+                iter.setSource(Bork.Properties.Resources.DummyImg2);
                 iter.setPosition(rng.Next((int)(Width / -2), (int)(Width/2)),
                                  rng.Next((int)(Height / -2), (int)(Height/2)));
                 iter.setSize(iter.Source.Width / 10, iter.Source.Height / 10);
@@ -49,6 +49,8 @@ namespace Bork
                 {
                     var now = DateTime.Now;
                     double dt = (double)((now - timeKeeper).Milliseconds) / 1000;
+                    if (dt > 0.017)
+                        System.Console.Out.WriteLine(dt);
                     Update(dt);
                     Thread.Sleep(1000/60);
                     timeKeeper = now;
@@ -64,7 +66,6 @@ namespace Bork
         double dScale = 0.1;
         private void aruAnimation(double dt)
         {
-            System.Console.Out.WriteLine(dt);
             Dispatcher.Invoke(() =>
             {
                 foreach (var ctrl in grid.Children)
@@ -76,7 +77,8 @@ namespace Bork
                     ri.setRotation(rot + 5);
 
                     var aruScale = aruImage.getScale().X;
-                    if (aruScale > 5 || aruScale < 1)
+                    if ((aruScale > 5 && dScale > 0) ||
+                        (aruScale < 1 && dScale < 0))
                         dScale *= -1;
                     var scale = ri.getScale();
                     scale += dScale;
