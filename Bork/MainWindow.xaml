@@ -7,7 +7,7 @@
         xmlns:ctrls="clr-namespace:Bork.Controls"
         xmlns:p="clr-namespace:Bork.Properties"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Bork" Height="350" Width="525" Icon="images/test2.png" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen">
     <Grid x:Name="grid">
         <ctrls:RichLabel x:Name="aruLabel" Content="{x:Static p:Resources.TestAru}"/>
         <ctrls:RichImage Source="{Binding Source={x:Static p:Resources.TestAru}}" x:Name="aruImage" Height="36" Width="36" />

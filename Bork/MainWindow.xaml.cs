@@ -27,7 +27,9 @@ namespace Bork
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-us");
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-            
+            Height = SystemParameters.FullPrimaryScreenHeight;
+            Width = SystemParameters.FullPrimaryScreenWidth;
+
             aruImage.setSource(Bork.Properties.Resources.DummyImg1);
 
             var rng = new Random();
