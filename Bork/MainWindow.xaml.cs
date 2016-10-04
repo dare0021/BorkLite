@@ -134,7 +134,7 @@ namespace Bork
             if (beingDragged != null)
             {
                 beingDragged.setPosition(ptInGame.X, ptInGame.Y);
-                Console.Out.WriteLine(beingDragged.containsPoint(aruImage.getPosition()));
+                Console.Out.WriteLine(beingDragged.boundingBoxContainsPoint(aruImage.getPosition()));
             }
         }
 
@@ -149,7 +149,7 @@ namespace Bork
                 if (!(ctrl is GameDisplayObject))
                     continue;
                 var gdo = ctrl as GameDisplayObject;
-                if (gdo.containsPoint(ptInGame))
+                if (gdo.boundingBoxContainsPoint(ptInGame))
                 {
                     beingDragged = (GameDisplayObject)ctrl;
                     break;

@@ -63,6 +63,10 @@ namespace Bork.Controls
             Source = new BitmapImage(new Uri(@"pack://application:,,,/Bork;component/" + pathInApplication, UriKind.Absolute));
         }
 
+        /// <summary>
+        /// For use in circular stuff e.g. buffs
+        /// </summary>
+        /// <returns></returns>
         public double getRadius()
         {
             var x = Width * getScale().X / 2;
@@ -124,14 +128,64 @@ namespace Bork.Controls
             translateTransform.X = x;
             translateTransform.Y = y;
         }
+
         /// <summary>
-        /// Uses a circle using getRadius()
+        /// Returns the rotated bounding box's two opposite points
         /// </summary>
-        /// <param name="v">Game coordinates</param>
+        /// <returns>Two opposite vertices of the box in world coordinates</returns>
+        public Pair<Vec2> getBoundingBox()
+        {
+            var x0 = getPosition().X - getSize().X / 2;
+            var x1 = getPosition().X + getSize().X / 2;
+            var y0 = getPosition().Y - getSize().Y / 2;
+            var y1 = getPosition().Y + getSize().Y / 2;
+            var vect0 = new Vec2(x0, y0);
+            var vect2 = new Vec2(x1, y1);
+            var rotRad = Common.getRadians(getRotation());
+            vect0 = Common.rotateVector(vect0, rotRad);
+            vect2 = Common.rotateVector(vect2, rotRad);
+            return new Pair<Vec2>(vect0, vect2);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="v">world coordinates</param>
         /// <returns></returns>
-        public bool containsPoint(Vec2 v)
+        public bool circleContainsPoint(Vec2 v)
         {
             return (v - getPosition()).getLength() < getRadius();
+        }
+
+        /// <summary>
+        /// http://stackoverflow.com/a/2752754
+        /// </summary>
+        /// <param name="v">world coordinates</param>
+        /// <returns></returns>
+        public bool boundingBoxContainsPoint(Vec2 v)
+        {
+            var x = v.X;
+            var y = v.Y;
+
+            var box = getBoundingBox();
+            var ax = box.X.X;
+            var ay = box.X.Y;
+            var bx = box.X.X;
+            var by = box.Y.Y;
+            var dx = box.Y.X;
+            var dy = box.X.Y;
+
+            var bax = bx - ax;
+            var bay = by - ay;
+            var dax = dx - ax;
+            var day = dy - ay;
+
+            if ((x - ax) * bax + (y - ay) * bay < 0.0) return false;
+            if ((x - bx) * bax + (y - by) * bay > 0.0) return false;
+            if ((x - ax) * dax + (y - ay) * day < 0.0) return false;
+            if ((x - dx) * dax + (y - dy) * day > 0.0) return false;
+
+            return true;
         }
 
         protected Common.RadiusMode radiusType;
