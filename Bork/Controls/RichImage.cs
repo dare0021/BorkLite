@@ -135,16 +135,16 @@ namespace Bork.Controls
         /// <returns>Two opposite vertices of the box in world coordinates</returns>
         public Pair<Vec2> getBoundingBox()
         {
-            var x0 = getPosition().X - getSize().X / 2;
-            var x1 = getPosition().X + getSize().X / 2;
-            var y0 = getPosition().Y - getSize().Y / 2;
-            var y1 = getPosition().Y + getSize().Y / 2;
+            var x0 = - getSize().X / 2;
+            var x1 = getSize().X / 2;
+            var y0 = - getSize().Y / 2;
+            var y1 = getSize().Y / 2;
             var vect0 = new Vec2(x0, y0);
             var vect2 = new Vec2(x1, y1);
             var rotRad = Common.getRadians(getRotation());
             vect0 = Common.rotateVector(vect0, rotRad);
             vect2 = Common.rotateVector(vect2, rotRad);
-            return new Pair<Vec2>(vect0, vect2);
+            return new Pair<Vec2>(vect0 + getPosition(), vect2 + getPosition());
         }
 
         /// <summary>
