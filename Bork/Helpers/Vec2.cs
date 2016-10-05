@@ -84,5 +84,10 @@ namespace Bork.Helpers
         {
             return new Vec2(vec.X / val, vec.Y / val);
         }
+
+        public override string ToString()
+        {
+            return "(" + X + ", " + Y + ")";
+        }
     }
 }

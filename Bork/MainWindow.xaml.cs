@@ -146,6 +146,7 @@ namespace Bork
             mouseDown = true;
             var ptOnScreen = new Vec2(e.GetPosition(this));
             var ptInGame = screenToWindow(ptOnScreen);
+            Console.WriteLine(ptOnScreen + " -> " + ptInGame);
             beingDragged = null;
             foreach (var ctrl in grid.Children)
             {
