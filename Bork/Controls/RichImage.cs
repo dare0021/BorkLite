@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using Bork.Helpers;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace Bork.Controls
 {
@@ -158,34 +159,32 @@ namespace Bork.Controls
         }
 
         /// <summary>
-        /// http://stackoverflow.com/a/2752754
         /// </summary>
         /// <param name="v">world coordinates</param>
         /// <returns></returns>
         public bool boundingBoxContainsPoint(Vec2 v)
         {
-            var x = v.X;
-            var y = v.Y;
-
             var box = getBoundingBox();
-            var ax = box.X.X;
-            var ay = box.X.Y;
-            var bx = box.X.X;
-            var by = box.Y.Y;
-            var dx = box.Y.X;
-            var dy = box.X.Y;
+            
+            var pt0 = new Vec2(box.X.X, box.X.Y);
+            var pt1 = new Vec2(box.X.X, box.Y.Y);
+            var pt2 = new Vec2(box.Y.X, box.Y.Y);
+            var pt3 = new Vec2(box.Y.X, box.X.Y);
 
-            var bax = bx - ax;
-            var bay = by - ay;
-            var dax = dx - ax;
-            var day = dy - ay;
+            PathSegmentCollection myPathSegmentCollection = new PathSegmentCollection(4);
+            myPathSegmentCollection.Add(Common.generateLineSegment(pt0, pt1));
+            myPathSegmentCollection.Add(Common.generateLineSegment(pt1, pt2));
+            myPathSegmentCollection.Add(Common.generateLineSegment(pt2, pt3));
+            myPathSegmentCollection.Add(Common.generateLineSegment(pt3, pt0));
 
-            if ((x - ax) * bax + (y - ay) * bay < 0.0) return false;
-            if ((x - bx) * bax + (y - by) * bay > 0.0) return false;
-            if ((x - ax) * dax + (y - ay) * day < 0.0) return false;
-            if ((x - dx) * dax + (y - dy) * day > 0.0) return false;
+            PathFigure myPathFigure = new PathFigure(new Point(pt0.X,pt0.Y), myPathSegmentCollection, true);
 
-            return true;
+            PathFigureCollection myPathFigureCollection = new PathFigureCollection(1);
+            myPathFigureCollection.Add(myPathFigure);
+
+            PathGeometry myPathGeometry = new PathGeometry(myPathFigureCollection);
+
+            return myPathGeometry.FillContains(new Point(v.X, v.Y));
         }
 
         protected Common.RadiusMode radiusType;

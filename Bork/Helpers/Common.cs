@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Bork.Helpers
 {
@@ -27,6 +29,17 @@ namespace Bork.Helpers
         {
             return new Vec2(Math.Cos(radians) * vect.X - Math.Sin(radians) * vect.Y,
                             Math.Sin(radians) * vect.X + Math.Cos(radians) * vect.Y);
+        }
+
+        public static LineSegment generateLineSegment(Vec2 a, Vec2 b)
+        {
+            PathFigure myPathFigure = new PathFigure();
+            myPathFigure.StartPoint = new Point(a.X,a.Y);
+
+            LineSegment myLineSegment = new LineSegment();
+            myLineSegment.Point = new Point(b.X,b.Y);
+
+            return myLineSegment;
         }
     }
 }
