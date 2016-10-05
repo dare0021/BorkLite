@@ -119,7 +119,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="videos\deathAnimationDummy\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="videos\deathAnimationDummy\0.png" />
+    <Resource Include="videos\deathAnimationDummy\1.png" />
+    <Resource Include="videos\deathAnimationDummy\2.png" />
+    <Resource Include="videos\deathAnimationDummy\3.png" />
+    <Resource Include="videos\deathAnimationDummy\4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -24,7 +24,7 @@ namespace Bork.Controls
             RenderTransformOrigin = new Point(0.5, 0.5);
 
             scaleTransform = new ScaleTransform();
-            scaleTransform.ScaleY = 1;
+            scaleTransform.ScaleY = -1;
             scaleTransform.ScaleX = 1;
 
             rotateTransform = new RotateTransform();
@@ -104,7 +104,7 @@ namespace Bork.Controls
         }
         public Vec2 getScale()
         {
-            return new Vec2(scaleTransform.ScaleX, scaleTransform.ScaleY);
+            return new Vec2(scaleTransform.ScaleX, -scaleTransform.ScaleY);
         }
         public void setScale(Vec2 v)
         {
@@ -113,7 +113,7 @@ namespace Bork.Controls
         public void setScale(double x, double y)
         {
             scaleTransform.ScaleX = x;
-            scaleTransform.ScaleY = y;
+            scaleTransform.ScaleY = -y;
         }
         public Vec2 getPosition()
         {

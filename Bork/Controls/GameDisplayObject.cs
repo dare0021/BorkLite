@@ -24,7 +24,7 @@ namespace Bork.Controls
             var effectiveSpeed = Speed * dt;
             var dx = effectiveSpeed * Math.Sin(rotation * Math.PI / 180);
             var dy = effectiveSpeed * Math.Cos(rotation * Math.PI / 180);
-            setPosition(getPosition() + new Vec2(dx, -dy)); //Why -ve? who knows?
+            setPosition(getPosition() + new Vec2(dx, dy));
             setRotation(rotation + RotationSpeed * dt);
         }
 

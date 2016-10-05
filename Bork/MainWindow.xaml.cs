@@ -37,13 +37,16 @@ namespace Bork
             aruImage.setSource(Bork.Properties.Resources.DummyImg1);
 
             var rng = new Random();
-            for (int i=0; i<0; i++)
+            Vec2[] locations = {new Vec2(300,300),
+                                new Vec2(300,-300),
+                                new Vec2(-300,-300),
+                                new Vec2(-300,300) };
+            for (int i=0; i<4; i++)
             {
                 var iter = new RichImage();
-                iter.setSource(Bork.Properties.Resources.DummyImg2);
-                iter.setPosition(rng.Next((int)(Width / -2), (int)(Width/2)),
-                                 rng.Next((int)(Height / -2), (int)(Height/2)));
-                iter.setSize(iter.Source.Width / 10, iter.Source.Height / 10);
+                iter.setSource("videos/deathAnimationDummy/" + i + ".png");
+                iter.setPosition(locations[i]);
+                iter.setSize(32, 32);
                 grid.Children.Add(iter);
             }
             var iter2 = new GameDisplayObject();
