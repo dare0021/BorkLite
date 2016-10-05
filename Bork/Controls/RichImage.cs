@@ -171,11 +171,10 @@ namespace Bork.Controls
             var pt2 = new Vec2(box.Y.X, box.Y.Y);
             var pt3 = new Vec2(box.Y.X, box.X.Y);
 
-            PathSegmentCollection myPathSegmentCollection = new PathSegmentCollection(4);
+            PathSegmentCollection myPathSegmentCollection = new PathSegmentCollection(3);
             myPathSegmentCollection.Add(Common.generateLineSegment(pt0, pt1));
             myPathSegmentCollection.Add(Common.generateLineSegment(pt1, pt2));
             myPathSegmentCollection.Add(Common.generateLineSegment(pt2, pt3));
-            myPathSegmentCollection.Add(Common.generateLineSegment(pt3, pt0));
 
             PathFigure myPathFigure = new PathFigure(new Point(pt0.X,pt0.Y), myPathSegmentCollection, true);
 
