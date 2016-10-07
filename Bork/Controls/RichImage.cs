@@ -133,8 +133,9 @@ namespace Bork.Controls
         /// <summary>
         /// Returns the rotated bounding box's two opposite points
         /// </summary>
+        /// <param name="getInWorld">If false will use screen coordinates</param>
         /// <returns>Two opposite vertices of the box in world coordinates</returns>
-        public Pair<Vec2> getBoundingBox()
+        public Pair<Vec2> getBoundingBox(bool getInWorld = true)
         {
             var x0 = - getSize().X / 2;
             var x1 = getSize().X / 2;
@@ -145,6 +146,16 @@ namespace Bork.Controls
             var rotRad = Common.getRadians(getRotation());
             vect0 = Common.rotateVector(vect0, rotRad);
             vect2 = Common.rotateVector(vect2, rotRad);
+            if (!getInWorld)
+            {
+                RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
+                RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+                var fudgeFactor = new Vec2(SystemParameters.FullPrimaryScreenWidth, SystemParameters.FullPrimaryScreenHeight) / 2;
+                vect0.X += fudgeFactor.X;
+                vect2.X += fudgeFactor.X;
+                vect0.Y = fudgeFactor.Y - vect0.Y;
+                vect2.Y = fudgeFactor.Y - vect2.Y;
+            }
             return new Pair<Vec2>(vect0 + getPosition(), vect2 + getPosition());
         }
 
@@ -164,8 +175,18 @@ namespace Bork.Controls
         /// <returns></returns>
         public bool boundingBoxContainsPoint(Vec2 v)
         {
-            var box = getBoundingBox();
-            
+            return getBoundingBoxGeometry().FillContains(new Point(v.X, v.Y));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="getInWorld">If false will use screen coordinates</param>
+        /// <returns></returns>
+        public PathGeometry getBoundingBoxGeometry(bool getInWorld = true)
+        {
+            var box = getBoundingBox(getInWorld);
+
             var pt0 = new Vec2(box.X.X, box.X.Y);
             var pt1 = new Vec2(box.X.X, box.Y.Y);
             var pt2 = new Vec2(box.Y.X, box.Y.Y);
@@ -176,14 +197,12 @@ namespace Bork.Controls
             myPathSegmentCollection.Add(Common.generateLineSegment(pt1, pt2));
             myPathSegmentCollection.Add(Common.generateLineSegment(pt2, pt3));
 
-            PathFigure myPathFigure = new PathFigure(new Point(pt0.X,pt0.Y), myPathSegmentCollection, true);
+            PathFigure myPathFigure = new PathFigure(new Point(pt0.X, pt0.Y), myPathSegmentCollection, true);
 
             PathFigureCollection myPathFigureCollection = new PathFigureCollection(1);
             myPathFigureCollection.Add(myPathFigure);
 
-            PathGeometry myPathGeometry = new PathGeometry(myPathFigureCollection);
-
-            return myPathGeometry.FillContains(new Point(v.X, v.Y));
+            return new PathGeometry(myPathFigureCollection);
         }
 
         protected Common.RadiusMode radiusType;

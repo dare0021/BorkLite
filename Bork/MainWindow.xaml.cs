@@ -65,8 +65,6 @@ namespace Bork
                 {
                     var now = DateTime.Now;
                     double dt = (double)((now - timeKeeper).Milliseconds) / 1000;
-                    if (dt > 0.017)
-                        System.Console.Out.WriteLine(dt);
                     Update(dt);
                     Thread.Sleep(1000/60);
                     timeKeeper = now;
@@ -78,10 +76,20 @@ namespace Bork
         {
             Dispatcher.Invoke(() =>
             {
+                canvas.Children.Clear();
                 foreach (var ctrl in grid.Children)
                 {
                     if (!(ctrl is GameDisplayObject))
                         continue;
+
+                    var box = ((GameDisplayObject)ctrl).getBoundingBoxGeometry(false);
+                    var p = new Path();
+                    p.Data = box;
+                    p.Fill = Brushes.Transparent;
+                    p.Stroke = Brushes.Red;
+                    p.StrokeThickness = 1;
+                    canvas.Children.Add(p);
+                    
                     ((GameDisplayObject)ctrl).Update(dt);
                 }
             });
@@ -146,7 +154,7 @@ namespace Bork
             mouseDown = true;
             var ptOnScreen = new Vec2(e.GetPosition(grid));
             var ptInGame = screenToWindow(ptOnScreen);
-            Console.WriteLine(ptOnScreen + " -> " + ptInGame);
+            //Console.WriteLine(ptOnScreen + " -> " + ptInGame);
             beingDragged = null;
             foreach (var ctrl in grid.Children)
             {
