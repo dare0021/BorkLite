@@ -134,29 +134,41 @@ namespace Bork.Controls
         /// Returns the rotated bounding box's two opposite points
         /// </summary>
         /// <param name="getInWorld">If false will use screen coordinates</param>
-        /// <returns>Two opposite vertices of the box in world coordinates</returns>
-        public Pair<Vec2> getBoundingBox(bool getInWorld = true)
+        /// <returns>world coordinates</returns>
+        public Quad getBoundingBox(bool getInWorld = true)
         {
             var x0 = - getSize().X / 2;
             var x1 = getSize().X / 2;
             var y0 = - getSize().Y / 2;
             var y1 = getSize().Y / 2;
             var vect0 = new Vec2(x0, y0);
+            var vect1 = new Vec2(x0, y1);
             var vect2 = new Vec2(x1, y1);
+            var vect3 = new Vec2(x1, y0);
             var rotRad = Common.getRadians(getRotation());
             vect0 = Common.rotateVector(vect0, rotRad);
+            vect1 = Common.rotateVector(vect1, rotRad);
             vect2 = Common.rotateVector(vect2, rotRad);
+            vect3 = Common.rotateVector(vect3, rotRad);
             if (!getInWorld)
             {
                 RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
                 RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
                 var fudgeFactor = new Vec2(SystemParameters.FullPrimaryScreenWidth, SystemParameters.FullPrimaryScreenHeight) / 2;
                 vect0.X += fudgeFactor.X;
+                vect1.X += fudgeFactor.X;
                 vect2.X += fudgeFactor.X;
+                vect3.X += fudgeFactor.X;
                 vect0.Y = fudgeFactor.Y - vect0.Y;
+                vect1.Y = fudgeFactor.Y - vect1.Y;
                 vect2.Y = fudgeFactor.Y - vect2.Y;
+                vect3.Y = fudgeFactor.Y - vect3.Y;
             }
-            return new Pair<Vec2>(vect0 + getPosition(), vect2 + getPosition());
+            vect0 += getPosition();
+            vect1 += getPosition();
+            vect2 += getPosition();
+            vect3 += getPosition();
+            return new Quad(vect0, vect1, vect2, vect3);
         }
 
         /// <summary>
@@ -187,17 +199,12 @@ namespace Bork.Controls
         {
             var box = getBoundingBox(getInWorld);
 
-            var pt0 = new Vec2(box.X.X, box.X.Y);
-            var pt1 = new Vec2(box.X.X, box.Y.Y);
-            var pt2 = new Vec2(box.Y.X, box.Y.Y);
-            var pt3 = new Vec2(box.Y.X, box.X.Y);
-
             PathSegmentCollection myPathSegmentCollection = new PathSegmentCollection(3);
-            myPathSegmentCollection.Add(Common.generateLineSegment(pt0, pt1));
-            myPathSegmentCollection.Add(Common.generateLineSegment(pt1, pt2));
-            myPathSegmentCollection.Add(Common.generateLineSegment(pt2, pt3));
+            myPathSegmentCollection.Add(Common.generateLineSegment(box.v0, box.v1));
+            myPathSegmentCollection.Add(Common.generateLineSegment(box.v1, box.v2));
+            myPathSegmentCollection.Add(Common.generateLineSegment(box.v2, box.v3));
 
-            PathFigure myPathFigure = new PathFigure(new Point(pt0.X, pt0.Y), myPathSegmentCollection, true);
+            PathFigure myPathFigure = new PathFigure(new Point(box.v0.X, box.v0.Y), myPathSegmentCollection, true);
 
             PathFigureCollection myPathFigureCollection = new PathFigureCollection(1);
             myPathFigureCollection.Add(myPathFigure);
