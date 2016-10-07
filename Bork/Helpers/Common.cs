@@ -10,6 +10,8 @@ namespace Bork.Helpers
 {
     public static class Common
     {
+        public static bool displayBoundingBox = true;
+
         public enum RadiusMode
         {
             Min, Avg, Max

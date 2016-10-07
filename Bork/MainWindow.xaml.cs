@@ -34,6 +34,8 @@ namespace Bork
             Height = SystemParameters.FullPrimaryScreenHeight;
             Width = SystemParameters.FullPrimaryScreenWidth;
 
+
+
             aruImage.setSource(Bork.Properties.Resources.DummyImg1);
 
             var rng = new Random();
@@ -76,19 +78,26 @@ namespace Bork
         {
             Dispatcher.Invoke(() =>
             {
-                canvas.Children.Clear();
+                if (Common.displayBoundingBox)
+                {
+                    canvasClearEveryUpdate.Children.Clear();
+                }
                 foreach (var ctrl in grid.Children)
                 {
                     if (!(ctrl is GameDisplayObject))
                         continue;
 
-                    var box = ((GameDisplayObject)ctrl).getBoundingBoxGeometry(false);
-                    var p = new Path();
-                    p.Data = box;
-                    p.Fill = Brushes.Transparent;
-                    p.Stroke = Brushes.Red;
-                    p.StrokeThickness = 1;
-                    canvas.Children.Add(p);
+                    if (Common.displayBoundingBox)
+                    {
+                        var box = ((GameDisplayObject)ctrl).getBoundingBoxGeometry(false);
+                        var p = new Path();
+                        p.Data = box;
+                        p.Fill = Brushes.Transparent;
+                        p.Stroke = Brushes.Red;
+                        p.StrokeThickness = 1;
+                        p.Name = "boundingBox" + ctrl.GetHashCode();
+                        canvasClearEveryUpdate.Children.Add(p);
+                    }
                     
                     ((GameDisplayObject)ctrl).Update(dt);
                 }
