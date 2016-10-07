@@ -72,11 +72,11 @@ namespace Bork.Controls
 
         public double getRotation()
         {
-            return rotateTransform.Angle;
+            return -rotateTransform.Angle;
         }
         public void setRotation(double v)
         {
-            rotateTransform.Angle = v;
+            rotateTransform.Angle = -v;
         }
         public Vec2 getSize()
         {
@@ -134,6 +134,8 @@ namespace Bork.Controls
             var vect2 = new Vec2(x1, y1);
             var vect3 = new Vec2(x1, y0);
             var rotRad = Common.getRadians(getRotation());
+            if (getInWorld)
+                rotRad *= -1;
             vect0 = Common.rotateVector(vect0, rotRad);
             vect1 = Common.rotateVector(vect1, rotRad);
             vect2 = Common.rotateVector(vect2, rotRad);

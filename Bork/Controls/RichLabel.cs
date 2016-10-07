@@ -35,11 +35,11 @@ namespace Bork.Controls
 
         public double getRotation()
         {
-            return rotateTransform.Angle;
+            return -rotateTransform.Angle;
         }
         public void setRotation(double v)
         {
-            rotateTransform.Angle = v;
+            rotateTransform.Angle = -v;
         }
         public Vec2 getScale()
         {
