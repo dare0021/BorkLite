@@ -20,21 +20,10 @@ namespace Bork.Controls
         public RichLabel()
         {
             RenderTransformOrigin = new Point(0.5, 0.5);
-            scaleTransform = new ScaleTransform();
-            scaleTransform.ScaleY = -1;
-            scaleTransform.ScaleX = 1;
-
-            rotateTransform = new RotateTransform();
-            rotateTransform.Angle = 0;
-
-            translateTransform = new TranslateTransform();
-            translateTransform.X = 0;
-            translateTransform.X = 0;
-
-            skewTransform = new SkewTransform();
-            skewTransform.AngleX = 0;
-            skewTransform.AngleY = 0;
-
+            scaleTransform = new ScaleTransform(1, -1);
+            rotateTransform = new RotateTransform(0);
+            translateTransform = new TranslateTransform(0, 0);
+            skewTransform = new SkewTransform(0, 0);
             TransformGroup myTransformGroup = new TransformGroup();
             myTransformGroup.Children.Add(scaleTransform);
             myTransformGroup.Children.Add(rotateTransform);
