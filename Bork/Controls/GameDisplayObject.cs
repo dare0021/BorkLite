@@ -18,8 +18,10 @@ namespace Bork.Controls
             MaxRotationSpeed = double.MaxValue;
         }
 
-        public void Update(double dt)
+        new public void Update(double dt)
         {
+            ((RichImage)this).Update(dt);
+
             var rotation = getRotation();
             var effectiveSpeed = Speed * dt;
             var dx = effectiveSpeed * Math.Sin(rotation * Math.PI / 180);

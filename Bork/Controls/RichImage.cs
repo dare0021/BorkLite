@@ -52,6 +52,11 @@ namespace Bork.Controls
             Source = new BitmapImage(new Uri(@"pack://application:,,,/Bork;component/" + pathInApplication, UriKind.Absolute));
         }
 
+        public void Update(double dt)
+        {
+
+        }
+
         /// <summary>
         /// For use in circular stuff e.g. buffs
         /// </summary>
