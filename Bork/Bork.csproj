@@ -64,8 +64,10 @@
     <Compile Include="Controls\GameDisplayObject.cs" />
     <Compile Include="Helpers\Common.cs" />
     <Compile Include="Controls\RichLabel.cs" />
+    <Compile Include="Helpers\ImageResourceMaster.cs" />
     <Compile Include="Helpers\Pair.cs" />
     <Compile Include="Helpers\Quad.cs" />
+    <Compile Include="Helpers\ImageResourceMap.cs" />
     <Compile Include="Helpers\Vec2.cs" />
     <Compile Include="Controls\RichImage.cs" />
     <Page Include="MainWindow.xaml">

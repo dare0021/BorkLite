@@ -34,10 +34,6 @@ namespace Bork
             Height = SystemParameters.FullPrimaryScreenHeight;
             Width = SystemParameters.FullPrimaryScreenWidth;
 
-
-
-            aruImage.setSource(Bork.Properties.Resources.DummyImg1);
-
             var rng = new Random();
             Vec2[] locations = {new Vec2(300,300),
                                 new Vec2(300,-300),
@@ -45,14 +41,12 @@ namespace Bork
                                 new Vec2(-300,300) };
             for (int i=0; i<4; i++)
             {
-                var iter = new RichImage();
-                iter.setSource("videos/deathAnimationDummy/" + i + ".png");
+                var iter = new RichImage("videos/deathAnimationDummy/" + i + ".png");
                 iter.setPosition(locations[i]);
                 iter.setSize(32, 32);
                 grid.Children.Add(iter);
             }
-            var iter2 = new GameDisplayObject();
-            iter2.setSource(Bork.Properties.Resources.DummyImg2);
+            var iter2 = new GameDisplayObject(Bork.Properties.Resources.DummyImg2);
             iter2.setPosition(rng.Next((int)(Width / -2), (int)(Width / 2)),
                              rng.Next((int)(Height / -2), (int)(Height / 2)));
             iter2.setSize(iter2.Source.Width / 10, iter2.Source.Height / 10);
@@ -121,30 +115,6 @@ namespace Bork
             return null;
         }
 
-        double dScale = 0.1;
-        private void aruAnimation(double dt)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var ctrl in grid.Children)
-                {
-                    if (!(ctrl is RichImage))
-                        continue;
-                    var ri = (RichImage)ctrl;
-                    var rot = ri.getRotation();
-                    ri.setRotation(rot + 5);
-
-                    var aruScale = aruImage.getScale().X;
-                    if ((aruScale > 5 && dScale > 0) ||
-                        (aruScale < 1 && dScale < 0))
-                        dScale *= -1;
-                    var scale = ri.getScale();
-                    scale += dScale;
-                    ri.setScale(scale);
-                }
-            });
-        }
-
         private void grid_MouseMove(object sender, MouseEventArgs e)
         {
             if (!mouseDown)
@@ -154,7 +124,6 @@ namespace Bork
             if (beingDragged != null)
             {
                 beingDragged.setPosition(ptInGame.X, ptInGame.Y);
-                //Console.Out.WriteLine(beingDragged.boundingBoxContainsPoint(aruImage.getPosition()));
             }
         }
 

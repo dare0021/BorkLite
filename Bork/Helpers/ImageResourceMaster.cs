@@ -7,35 +7,35 @@ using System.Windows.Media.Imaging;
 
 namespace Bork.Helpers
 {
-    class ResourceMap
+    static class ImageResourceMaster
     {
-        private Dictionary<string, BitmapImage> resources;
+        static private Dictionary<string, BitmapImage> resources = new Dictionary<string, BitmapImage>();
 
         /// <summary>
-        /// Replaces existing entry if item with the name already exists
+        /// Updates existing entry if item at the path was already loaded
         /// </summary>
         /// <param name="name"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public BitmapImage LoadResource(string name, string path)
+        static public BitmapImage LoadResource(string path)
         {
             if (path[0] == '/')
             {
                 path = path.Substring(1);
             }
             var bmp = new BitmapImage(new Uri(@"pack://application:,,,/Bork;component/" + path, UriKind.Absolute));
-            resources[name] = bmp;
+            resources[path] = bmp;
             return bmp;
         }
 
         /// <summary>
         /// Returns null if no such entry is found
         /// </summary>
-        public BitmapImage GetResource(string name)
+        static public BitmapImage GetResource(string path)
         {
-            if (!resources.ContainsKey(name))
+            if (!resources.ContainsKey(path))
                 return null;
-            return resources[name];
+            return resources[path];
         }
 
         /// <summary>
@@ -43,14 +43,14 @@ namespace Bork.Helpers
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool RemoveResource(string name)
+        static public bool UnloadResource(string path)
         {
-            return resources.Remove(name);
+            return resources.Remove(path);
         }
 
-        public bool Contains(string name)
+        static public bool Contains(string path)
         {
-            return resources.ContainsKey(name);
+            return resources.ContainsKey(path);
         }
     }
 }

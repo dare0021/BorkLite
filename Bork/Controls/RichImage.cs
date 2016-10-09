@@ -15,18 +15,21 @@ namespace Bork.Controls
 {
     public class RichImage : Image
     {
+        private ImageResourceMap imageResourceMap = new ImageResourceMap();
+        private string currentImage = null;
+
         private ScaleTransform scaleTransform;
         private RotateTransform rotateTransform;
         private TranslateTransform translateTransform;
         private SkewTransform skewTransform;
 
-        public RichImage()
+        public RichImage(string path)
         {
             RenderTransformOrigin = new Point(0.5, 0.5);
-            scaleTransform = new ScaleTransform(1,-1);
+            scaleTransform = new ScaleTransform(1, -1);
             rotateTransform = new RotateTransform(0);
-            translateTransform = new TranslateTransform(0,0);
-            skewTransform = new SkewTransform(0,0);
+            translateTransform = new TranslateTransform(0, 0);
+            skewTransform = new SkewTransform(0, 0);
             TransformGroup myTransformGroup = new TransformGroup();
             myTransformGroup.Children.Add(scaleTransform);
             myTransformGroup.Children.Add(rotateTransform);
@@ -36,20 +39,19 @@ namespace Bork.Controls
             RenderTransform = myTransformGroup;
 
             RadiusType = Common.RadiusMode.Min;
-        }
 
-        /// <summary>
-        /// Load a resource WPF-BitmapImage (png, bmp, ...) from embedded resource defined as 'Resource' not as 'Embedded resource'.
-        /// http://stackoverflow.com/a/9737958/2444520
-        /// </summary>
-        /// <param name="pathInApplication">Path without starting slash</param>
-        public void setSource(string pathInApplication)
+            LoadResource("idle", path);
+            setSource("idle");
+        }
+        
+        public void LoadResource(string name, string path)
         {
-            if (pathInApplication[0] == '/')
-            {
-                pathInApplication = pathInApplication.Substring(1);
-            }
-            Source = new BitmapImage(new Uri(@"pack://application:,,,/Bork;component/" + pathInApplication, UriKind.Absolute));
+            imageResourceMap.LoadResource(name, path);
+        }
+        public void setSource(string name)
+        {
+            Source = imageResourceMap.GetResource(name);
+            currentImage = name;
         }
 
         public void Update(double dt)

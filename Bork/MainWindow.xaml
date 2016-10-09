@@ -19,6 +19,5 @@
         </Grid.RenderTransform>
         <Canvas x:Name="canvasClearEveryUpdate" Background="Transparent"></Canvas>
         <ctrls:RichLabel x:Name="aruLabel" Content="{x:Static p:Resources.TestAru}"/>
-        <ctrls:RichImage Source="{Binding Source={x:Static p:Resources.TestAru}}" x:Name="aruImage" Height="36" Width="36" />
     </Grid>
 </Window>

@@ -12,7 +12,7 @@ namespace Bork.Controls
     /// </summary>
     class GameDisplayObject : RichImage
     {
-        public GameDisplayObject()
+        public GameDisplayObject(string path) : base(path)
         {
             MaxSpeed = double.MaxValue;
             MaxRotationSpeed = double.MaxValue;
@@ -88,7 +88,7 @@ namespace Bork.Controls
         public double MaxRotationSpeed { get; set; }
         public double MaxHP { get; set; }
 
-        protected LinkedList<string> tags;
+        protected LinkedList<string> tags = new LinkedList<string>();
 
         public bool isInvulnerable()
         {
