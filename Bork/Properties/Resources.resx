@@ -126,7 +126,4 @@
   <data name="DummyImg2" xml:space="preserve">
     <value>images/test2.png</value>
   </data>
-  <data name="DeathAnimationDummy" xml:space="preserve">
-    <value>videos/deathDummy.avi</value>
-  </data>
 </root>

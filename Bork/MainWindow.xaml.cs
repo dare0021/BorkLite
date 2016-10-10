@@ -96,7 +96,6 @@ namespace Bork
                     ((GameDisplayObject)ctrl).Update(dt);
                 }
             });
-            //aruAnimation(dt);
         }
 
         public Vec2 screenToWindow(Vec2 v)
