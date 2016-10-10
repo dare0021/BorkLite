@@ -30,6 +30,7 @@ namespace Bork.Helpers
                 dtNew -= animationData[i].Y;
                 i = (i + 1) % animationData.Count;
             }
+            currentItem = animationData[i].X;
             currentOffset = dtNew;
         }
 
