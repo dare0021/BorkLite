@@ -36,7 +36,7 @@ namespace Bork.Helpers
 
             for (int i = from; i < frameCount + from; i++)
             {
-                animationData.Add(new Pair<string, double>(namePrefix + from, duration));
+                animationData.Add(new Pair<string, double>(namePrefix + i, duration));
             }
         }
 
