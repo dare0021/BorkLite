@@ -16,14 +16,15 @@ namespace Bork.Controls
     public class RichImage : Image
     {
         private ImageResourceMap imageResourceMap = new ImageResourceMap();
-        private string currentImage = null;
+        private Dictionary<string, AnimationProfile> animationProfiles = new Dictionary<string, AnimationProfile>();
+        private string currentImage = null, currentAnimation = null;
 
         private ScaleTransform scaleTransform;
         private RotateTransform rotateTransform;
         private TranslateTransform translateTransform;
         private SkewTransform skewTransform;
-
-        public RichImage(string path)
+        
+        public RichImage(string path, bool animated = false, int frameCount = 0, double duration = 0, int from = 0)
         {
             RenderTransformOrigin = new Point(0.5, 0.5);
             scaleTransform = new ScaleTransform(1, -1);
@@ -40,13 +41,41 @@ namespace Bork.Controls
 
             RadiusType = Common.RadiusMode.Min;
 
-            LoadResource("idle", path);
-            setSource("idle");
+            if (!animated)
+            {
+                LoadResourceStatic("idle", path);
+            }
+            else
+            {
+                LoadResourceVideo("idle", path, frameCount, duration, from);
+            }
+            setAnimation("idle");
         }
         
-        public void LoadResource(string name, string path)
+        public AnimationProfile LoadResourceStatic(string name, string path)
         {
             imageResourceMap.LoadResource(name, path);
+            animationProfiles[name] = new AnimationProfile(name);
+            return animationProfiles[name];
+        }
+        /// <summary>
+        /// Loads a video with the given frame rate using images of name namePrefix#, where # is ints from from to from + frameCount
+        /// e.g. namePrefix1, namePrefix2, ... if from is 1
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="parentPath"></param>
+        /// <param name="frameCount"></param>
+        /// <param name="from">defaults to 0</param>
+        public AnimationProfile LoadResourceVideo(string name, string parentPath, int frameCount, double duration, int from = 0)
+        {
+            imageResourceMap.ImportVideo(name, parentPath, frameCount, from);
+            animationProfiles[name] = new AnimationProfile(name, duration, frameCount, from);
+            return animationProfiles[name];
+        }
+        public void setAnimation(string name)
+        {
+            currentAnimation = name;
+            setSource(animationProfiles[name].getCurrentItem());
         }
         public void setSource(string name)
         {
@@ -56,7 +85,15 @@ namespace Bork.Controls
 
         public void Update(double dt)
         {
-
+            if (currentAnimation != null)
+            {
+                var animationProfile = animationProfiles[currentAnimation];
+                if (animationProfile.IsAnimated)
+                {
+                    animationProfile.Update(dt);
+                    setSource(animationProfile.getCurrentItem());
+                }
+            }
         }
 
         /// <summary>

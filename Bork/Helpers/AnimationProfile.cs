@@ -12,9 +12,8 @@ namespace Bork.Helpers
     /// </summary>
     public class AnimationProfile
     {
-        public AnimationProfile(string profileName, string imageName)
+        public AnimationProfile(string imageName)
         {
-            name = profileName;
             IsAnimated = false;
             currentItem = imageName;
             currentOffset = 0;
@@ -25,14 +24,12 @@ namespace Bork.Helpers
         /// Loads a video with the given frame rate using images of name namePrefix#, where # is ints from from to from + frameCount
         /// e.g. namePrefix1, namePrefix2, ... if from is 1
         /// </summary>
-        /// <param name="profileName"></param>
         /// <param name="namePrefix"></param>
         /// <param name="duration"></param>
         /// <param name="frameCount"></param>
         /// <param name="from">defaults to 0</param>
-        public AnimationProfile(string profileName, string namePrefix, double duration, int frameCount, int from = 0)
+        public AnimationProfile(string namePrefix, double duration, int frameCount, int from = 0)
         {
-            name = profileName;
             IsAnimated = true;
             currentItem = namePrefix + from;
             currentOffset = 0;
@@ -85,16 +82,11 @@ namespace Bork.Helpers
         }
 
 
-        private string name, currentItem;
+        private string currentItem;
         private double currentOffset;
         private List<Pair<string, double>> animationData = new List<Pair<string, double>>();
 
-        public bool IsAnimated { get; set; }
-
-        public string getName()
-        {
-            return name;
-        }
+        public bool IsAnimated { get; set; }      
 
         public string getCurrentItem()
         {
