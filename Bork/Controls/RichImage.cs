@@ -50,6 +50,7 @@ namespace Bork.Controls
                 LoadResourceVideo("idle", path, frameCount, duration, from);
             }
             setAnimation("idle");
+            setSize(Source.Width, Source.Height);
         }
         
         public AnimationProfile LoadResourceStatic(string name, string path)

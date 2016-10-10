@@ -54,6 +54,9 @@ namespace Bork
             iter2.Speed = 5;
             iter2.RotationSpeed = 5;
 
+            var animtest = new RichImage("videos/deathAnimationDummy", true, 4, 0.5, 1);
+            grid.Children.Add(animtest);
+
             Task.Run(() =>
             {
                 DateTime timeKeeper = DateTime.Now;
@@ -78,22 +81,25 @@ namespace Bork
                 }
                 foreach (var ctrl in grid.Children)
                 {
-                    if (!(ctrl is GameDisplayObject))
-                        continue;
-
-                    if (Common.displayBoundingBox)
+                    if (ctrl is GameDisplayObject)
                     {
-                        var box = ((GameDisplayObject)ctrl).getBoundingBoxGeometry(false);
-                        var p = new Path();
-                        p.Data = box;
-                        p.Fill = Brushes.Transparent;
-                        p.Stroke = Brushes.Red;
-                        p.StrokeThickness = 1;
-                        p.Name = "boundingBox" + ctrl.GetHashCode();
-                        canvasClearEveryUpdate.Children.Add(p);
+                        if (Common.displayBoundingBox)
+                        {
+                            var box = ((GameDisplayObject)ctrl).getBoundingBoxGeometry(false);
+                            var p = new Path();
+                            p.Data = box;
+                            p.Fill = Brushes.Transparent;
+                            p.Stroke = Brushes.Red;
+                            p.StrokeThickness = 1;
+                            p.Name = "boundingBox" + ctrl.GetHashCode();
+                            canvasClearEveryUpdate.Children.Add(p);
+                        }
+                        ((GameDisplayObject)ctrl).Update(dt);
                     }
-                    
-                    ((GameDisplayObject)ctrl).Update(dt);
+                    else if(ctrl is RichImage)
+                    {
+                        ((RichImage)ctrl).Update(dt);
+                    }
                 }
             });
         }
