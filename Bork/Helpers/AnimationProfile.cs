@@ -68,7 +68,6 @@ namespace Bork.Helpers
         private List<Pair<string, double>> animationData = new List<Pair<string, double>>();
 
         public bool IsAnimated { get; set; }
-        public int Framerate { get; set; }
 
         public string getName()
         {
