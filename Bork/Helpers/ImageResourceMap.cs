@@ -49,5 +49,23 @@ namespace Bork.Helpers
         {
             return resources.ContainsKey(name);
         }
+
+        /// <summary>
+        /// Loads a video with the given frame rate using images of name namePrefix#, where # is ints from from to from + frameCount
+        /// e.g. namePrefix1, namePrefix2, ... if from is 1
+        /// </summary>
+        /// <param name="namePrefix"></param>
+        /// <param name="parentPath"></param>
+        /// <param name="frameCount"></param>
+        /// <param name="from">defaults to 0</param>
+        public void ImportVideo(string namePrefix, string parentPath, int frameCount, int from = 0)
+        {
+            if (parentPath[parentPath.Length - 1] != '/')
+                parentPath += '/';
+            for (int i = from; i < frameCount + from; i++)
+            {
+                LoadResource(namePrefix + i, parentPath + i + ".png");
+            }
+        }
     }
 }

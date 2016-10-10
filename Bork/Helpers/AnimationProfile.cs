@@ -21,6 +21,28 @@ namespace Bork.Helpers
             animationData.Add(new Pair<string, double>(imageName, double.MaxValue));
         }
 
+        /// <summary>
+        /// Loads a video with the given frame rate using images of name namePrefix#, where # is ints from from to from + frameCount
+        /// e.g. namePrefix1, namePrefix2, ... if from is 1
+        /// </summary>
+        /// <param name="profileName"></param>
+        /// <param name="namePrefix"></param>
+        /// <param name="duration"></param>
+        /// <param name="frameCount"></param>
+        /// <param name="from">defaults to 0</param>
+        public AnimationProfile(string profileName, string namePrefix, double duration, int frameCount, int from = 0)
+        {
+            name = profileName;
+            IsAnimated = true;
+            currentItem = namePrefix + from;
+            currentOffset = 0;
+
+            for (int i = from; i < frameCount + from; i++)
+            {
+                animationData.Add(new Pair<string, double>(namePrefix + from, duration));
+            }
+        }
+
         public void Update(double dt)
         {
             var dtNew = dt + currentOffset;
