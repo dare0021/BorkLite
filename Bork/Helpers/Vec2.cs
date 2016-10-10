@@ -23,7 +23,7 @@ namespace Bork.Helpers
             Y = p.Y;
         }
 
-        public Vec2(Pair<double> v)
+        public Vec2(Pair<double, double> v)
         {
             X = v.X;
             Y = v.Y;
