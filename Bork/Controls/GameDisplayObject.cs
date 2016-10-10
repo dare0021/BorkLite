@@ -12,7 +12,8 @@ namespace Bork.Controls
     /// </summary>
     class GameDisplayObject : RichImage
     {
-        public GameDisplayObject(string path) : base(path)
+        public GameDisplayObject(string path, bool animated = false, int frameCount = 0, double duration = 0, int from = 0) 
+            : base(path, animated, frameCount, duration, from)
         {
             MaxSpeed = double.MaxValue;
             MaxRotationSpeed = double.MaxValue;
