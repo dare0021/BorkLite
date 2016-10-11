@@ -24,14 +24,21 @@ namespace Bork.Controls
         new public void Update(double dt)
         {
             ((RichImage)this).Update(dt);
+            var rotation = getRotation();
 
             if (RotationMode == Common.RotationMode.Tracking && TrackingTarget != null)
             {
                 var dr = Common.getAngleBetween(getPosition(), TrackingTarget.getPosition());
-                RotationSpeed = dr > 0 ? MaxRotationSpeed : -MaxRotationSpeed;
+                var target1 = dr + 180;
+                var target2 = dr - 180;
+                RotationTarget = Math.Abs(rotation - target1) < Math.Abs(rotation - target2) ?
+                                    target1 : target2;
+            }
+            if (RotationMode == Common.RotationMode.TargetRotation|| RotationMode == Common.RotationMode.Tracking)
+            {
+                RotationSpeed = RotationTarget - rotation;
             }
 
-            var rotation = getRotation();
             var effectiveSpeed = Speed * dt;
             var dx = effectiveSpeed * Math.Sin(rotation * Math.PI / 180);
             var dy = effectiveSpeed * Math.Cos(rotation * Math.PI / 180);

@@ -25,7 +25,7 @@ namespace Bork.Helpers
         /// </summary>
         public enum RotationMode
         {
-            Manual, Tracking
+            Manual, Tracking, TargetRotation
         }
 
         public static double getRadians(double degrees)
@@ -55,11 +55,17 @@ namespace Bork.Helpers
             return myLineSegment;
         }
 
-        public static double getAngleBetween(Vec2 a, Vec2 b)
+        /// <summary>
+        /// Finds the heading of the vector (point - pivot) in degrees
+        /// </summary>
+        /// <param name="pivot"></param>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public static double getAngleBetween(Vec2 point, Vec2 pivot)
         {
             // X and Y positions inverted since we're using heading (CW)
             // when Math.Atan2() assumes CCW
-            return Common.getDegrees(Math.Atan2(b.X - a.X, b.Y - a.Y));
+            return Common.getDegrees(Math.Atan2(point.X - pivot.X, point.Y - pivot.Y));
         }
 
         public static ulong getNewUID()

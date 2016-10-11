@@ -41,12 +41,14 @@ namespace Bork
                                 new Vec2(300,-300),
                                 new Vec2(-300,-300),
                                 new Vec2(-300,300) };
+            RichImage trackerTarget = null;
             for (int i=0; i<4; i++)
             {
                 var iter = new RichImage("videos/deathAnimationDummy/" + i + ".png");
                 iter.setPosition(locations[i]);
                 iter.setSize(32, 32);
                 grid.Children.Add(iter);
+                trackerTarget = iter;
             }
             var iter2 = new GameDisplayObject(Bork.Properties.Resources.DummyImg2);
             iter2.setPosition(rng.Next((int)(Width / -2), (int)(Width / 2)),
@@ -60,7 +62,7 @@ namespace Bork
             var animtest = new GameDisplayObject("videos/deathAnimationDummy", true, 4, 0.5, 1);
             grid.Children.Add(animtest);
 
-            iter2.TrackingTarget = animtest;
+            iter2.TrackingTarget = trackerTarget;
 
             var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", true, 1, 3, 1);
             singleusetest.setPosition(200, 0);
