@@ -24,7 +24,7 @@ namespace Bork
         private bool mouseDown = false;
         private GameDisplayObject beingDragged;
         private Dictionary<ulong, int> singleUseSpriteLifetimes = new Dictionary<ulong, int>();
-        private List<RichImage> markedForDeletion = new List<RichImage>();
+        private List<UIElement> markedForDeletion = new List<UIElement>();
 
         public MainWindow()
         {
@@ -96,9 +96,9 @@ namespace Bork
                 {
                     canvasClearEveryUpdate.Children.Clear();
                 }
-                foreach (var image in markedForDeletion)
+                foreach (var obj in markedForDeletion)
                 {
-                    grid.Children.Remove(image);
+                    grid.Children.Remove(obj);
                 }
                 markedForDeletion.Clear();
                 foreach (var ctrl in grid.Children)
