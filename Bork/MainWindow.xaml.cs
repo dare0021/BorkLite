@@ -52,10 +52,13 @@ namespace Bork
             iter2.setSize(iter2.Source.Width / 10, iter2.Source.Height / 10);
             grid.Children.Add(iter2);
             iter2.Speed = 5;
-            iter2.RotationSpeed = 5;
+            iter2.MaxRotationSpeed = 5;
+            iter2.RotationMode = Common.RotationMode.Tracking;
 
-            var animtest = new RichImage("videos/deathAnimationDummy", true, 4, 0.5, 1);
+            var animtest = new GameDisplayObject("videos/deathAnimationDummy", true, 4, 0.5, 1);
             grid.Children.Add(animtest);
+
+            iter2.TrackingTarget = animtest;
 
             Task.Run(() =>
             {

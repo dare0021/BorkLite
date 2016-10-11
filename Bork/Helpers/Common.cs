@@ -17,6 +17,15 @@ namespace Bork.Helpers
             Min, Avg, Max
         }
 
+        /// <summary>
+        /// Manual: keeps rotating according to the rotation speed set
+        /// Tracking: rotates to face the target at MaxRotationSpeed
+        /// </summary>
+        public enum RotationMode
+        {
+            Manual, Tracking
+        }
+
         public static double getRadians(double degrees)
         {
             return degrees * Math.PI / 180;

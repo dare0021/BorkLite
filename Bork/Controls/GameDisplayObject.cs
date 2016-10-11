@@ -15,6 +15,8 @@ namespace Bork.Controls
         public GameDisplayObject(string path, bool animated = false, int frameCount = 0, double duration = 0, int from = 0) 
             : base(path, animated, frameCount, duration, from)
         {
+            RotationMode = Common.RotationMode.Manual;
+
             MaxSpeed = double.MaxValue;
             MaxRotationSpeed = double.MaxValue;
         }
@@ -23,13 +25,22 @@ namespace Bork.Controls
         {
             ((RichImage)this).Update(dt);
 
+            if (RotationMode == Common.RotationMode.Tracking && TrackingTarget != null)
+            {
+                var dr = Common.getAngleBetween(getPosition(), TrackingTarget.getPosition());
+                RotationSpeed = dr > 0 ? MaxRotationSpeed : -MaxRotationSpeed;
+            }
+
             var rotation = getRotation();
             var effectiveSpeed = Speed * dt;
             var dx = effectiveSpeed * Math.Sin(rotation * Math.PI / 180);
             var dy = effectiveSpeed * Math.Cos(rotation * Math.PI / 180);
+            var effectiveRotationSpeed = RotationSpeed * dt; 
             setPosition(getPosition() + new Vec2(dx, dy));
-            setRotation(rotation + RotationSpeed * dt);
+            setRotation(rotation + effectiveRotationSpeed);
         }
+
+        public Common.RotationMode RotationMode { get; set; }
 
         private double speed;
         public double Speed
@@ -88,8 +99,22 @@ namespace Bork.Controls
         public double MaxSpeed { get; set; }
         public double MaxRotationSpeed { get; set; }
         public double MaxHP { get; set; }
+        public double RotationTarget { get; set; }
 
-        protected LinkedList<string> tags = new LinkedList<string>();
+        private RichImage trackingTarget;
+        public RichImage TrackingTarget
+        {
+            get
+            {
+                return trackingTarget;
+            }
+            set
+            {
+                trackingTarget = value;
+            }
+        }
+
+        protected List<string> tags = new List<string>();
 
         public bool isInvulnerable()
         {
@@ -103,7 +128,7 @@ namespace Bork.Controls
             }
             else if (!tags.Contains("invulnerable") && v)
             {
-                tags.AddLast("invulnerable");
+                tags.Add("invulnerable");
             }
         }
 
