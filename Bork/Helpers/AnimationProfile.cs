@@ -16,7 +16,7 @@ namespace Bork.Helpers
         {
             IsAnimated = false;
             currentItem = imageName;
-            currentOffset = 0;
+            currentOffset = loopNo = 0;
             animationData.Add(new Pair<string, double>(imageName, double.MaxValue));
         }
 
@@ -47,7 +47,12 @@ namespace Bork.Helpers
             while (dtNew >= animationData[i].Y)
             {
                 dtNew -= animationData[i].Y;
-                i = (i + 1) % animationData.Count;
+                i++;
+                if (i >= animationData.Count)
+                {
+                    i = 0;
+                    loopNo++;
+                }
             }
             currentItem = animationData[i].X;
             currentOffset = dtNew;
@@ -84,6 +89,7 @@ namespace Bork.Helpers
 
         private string currentItem;
         private double currentOffset;
+        private int loopNo;
         private List<Pair<string, double>> animationData = new List<Pair<string, double>>();
 
         public bool IsAnimated { get; set; }      
@@ -91,6 +97,21 @@ namespace Bork.Helpers
         public string getCurrentItem()
         {
             return currentItem;
+        }
+
+        public int getLoopNo()
+        {
+            return loopNo;
+        }
+        /// <summary>
+        /// Returns current loopNo
+        /// </summary>
+        /// <returns></returns>
+        public int resetLoopNo()
+        {
+            var loopNoTemp = loopNo;
+            loopNo = 0;
+            return loopNoTemp;
         }
     }
 }

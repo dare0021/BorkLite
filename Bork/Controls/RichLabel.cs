@@ -12,6 +12,7 @@ namespace Bork.Controls
 {
     class RichLabel : Label
     {
+        public readonly ulong id; 
         private ScaleTransform scaleTransform;
         private RotateTransform rotateTransform;
         private TranslateTransform translateTransform;
@@ -31,6 +32,8 @@ namespace Bork.Controls
             myTransformGroup.Children.Add(skewTransform);
 
             RenderTransform = myTransformGroup;
+
+            id = Common.getNewUID();
         }
 
         public double getRotation()

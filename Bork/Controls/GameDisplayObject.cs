@@ -93,7 +93,7 @@ namespace Bork.Controls
             {
                 hp = value > MaxHP ? MaxHP : value;
                 if (hp < 0)
-                    justDied(value);
+                    kill(value);
             }
         }
         public double MaxSpeed { get; set; }
@@ -136,7 +136,7 @@ namespace Bork.Controls
         /// Run when the HP first reaches < 0
         /// </summary>
         /// <param name="dHP">The hp modifier that resulted in this function being called</param>
-        protected void justDied(double dHP)
+        public void kill(double dHP)
         {
 
         }

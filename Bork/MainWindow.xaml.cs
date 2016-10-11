@@ -22,7 +22,9 @@ namespace Bork
     public partial class MainWindow : Window
     {
         private bool mouseDown = false;
-        GameDisplayObject beingDragged;
+        private GameDisplayObject beingDragged;
+        private Dictionary<ulong, int> singleUseSpriteLifetimes = new Dictionary<ulong, int>();
+        private List<RichImage> markedForDeletion = new List<RichImage>();
 
         public MainWindow()
         {
@@ -60,6 +62,16 @@ namespace Bork
 
             iter2.TrackingTarget = animtest;
 
+            var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", true, 1, 3, 1);
+            singleusetest.setPosition(200, 0);
+            registerAsSingleUseVideo(singleusetest, 1);
+            grid.Children.Add(singleusetest);
+
+            var singleusetest2 = new GameDisplayObject("videos/deathAnimationDummy", true, 4, 0.2, 1);
+            singleusetest2.setPosition(-200, 0);
+            registerAsSingleUseVideo(singleusetest2, 3);
+            grid.Children.Add(singleusetest2);
+
             Task.Run(() =>
             {
                 DateTime timeKeeper = DateTime.Now;
@@ -82,13 +94,19 @@ namespace Bork
                 {
                     canvasClearEveryUpdate.Children.Clear();
                 }
+                foreach (var image in markedForDeletion)
+                {
+                    grid.Children.Remove(image);
+                }
+                markedForDeletion.Clear();
                 foreach (var ctrl in grid.Children)
                 {
                     if (ctrl is GameDisplayObject)
                     {
+                        var gdo = (GameDisplayObject)ctrl;
                         if (Common.displayBoundingBox)
                         {
-                            var box = ((GameDisplayObject)ctrl).getBoundingBoxGeometry(false);
+                            var box = gdo.getBoundingBoxGeometry(false);
                             var p = new Path();
                             p.Data = box;
                             p.Fill = Brushes.Transparent;
@@ -97,14 +115,30 @@ namespace Bork
                             p.Name = "boundingBox" + ctrl.GetHashCode();
                             canvasClearEveryUpdate.Children.Add(p);
                         }
-                        ((GameDisplayObject)ctrl).Update(dt);
+                        gdo.Update(dt);
+                        checkIfSingleUseFinished(gdo);
                     }
                     else if(ctrl is RichImage)
                     {
-                        ((RichImage)ctrl).Update(dt);
+                        var ri = (RichImage)ctrl;
+                        ri.Update(dt);
+                        checkIfSingleUseFinished(ri);
                     }
                 }
             });
+        }
+
+        private void checkIfSingleUseFinished(RichImage image)
+        {
+            if (!singleUseSpriteLifetimes.ContainsKey(image.id) 
+                || singleUseSpriteLifetimes[image.id] > image.getLoopNo())
+                return;
+            if (image is GameDisplayObject)
+            {
+                var gdo = (GameDisplayObject)image;
+                gdo.kill(-1 * gdo.HP);
+            }
+            markedForDeletion.Add(image);
         }
 
         public Vec2 screenToWindow(Vec2 v)
@@ -116,11 +150,15 @@ namespace Bork
             return new Vec2(x - Width / 2, y - Height / 2);
         }
 
-        public RichImage displaySingleUseVideo(String path, Vec2 position, Vec2 size, double rotation)
+        /// <summary>
+        /// Remove image image after loops loops
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="loops"></param>
+        /// <returns></returns>
+        public void registerAsSingleUseVideo(RichImage image, int loops = 1)
         {
-            //TODO: implement the gif-like thing in RichImage
-            // MediaElement is a no go as it ignores the alpha channel
-            return null;
+            singleUseSpriteLifetimes[image.id] = loops;
         }
 
         private void grid_MouseMove(object sender, MouseEventArgs e)

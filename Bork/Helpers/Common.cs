@@ -10,6 +10,8 @@ namespace Bork.Helpers
 {
     public static class Common
     {
+        private static ulong nextUID = 0;
+
         public static bool displayBoundingBox = true;
 
         public enum RadiusMode
@@ -58,6 +60,13 @@ namespace Bork.Helpers
             // X and Y positions inverted since we're using heading (CW)
             // when Math.Atan2() assumes CCW
             return Common.getDegrees(Math.Atan2(b.X - a.X, b.Y - a.Y));
+        }
+
+        public static ulong getNewUID()
+        {
+            var retval = nextUID;
+            nextUID++;
+            return retval;
         }
     }
 }

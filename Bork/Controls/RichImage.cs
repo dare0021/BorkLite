@@ -15,6 +15,7 @@ namespace Bork.Controls
 {
     public class RichImage : Image
     {
+        public readonly ulong id;
         private ImageResourceMap imageResourceMap = new ImageResourceMap();
         private Dictionary<string, AnimationProfile> animationProfiles = new Dictionary<string, AnimationProfile>();
         private string currentImage = null, currentAnimation = null;
@@ -39,7 +40,10 @@ namespace Bork.Controls
 
             RenderTransform = myTransformGroup;
 
+            id = Common.getNewUID();
+
             RadiusType = Common.RadiusMode.Min;
+            IsSingleUse = false;
 
             if (!animated)
             {
@@ -76,7 +80,9 @@ namespace Bork.Controls
         public void setAnimation(string name)
         {
             currentAnimation = name;
-            setSource(animationProfiles[name].getCurrentItem());
+            var animation = animationProfiles[name];
+            animation.resetLoopNo();
+            setSource(animation.getCurrentItem());
         }
         public void setSource(string name)
         {
@@ -106,11 +112,11 @@ namespace Bork.Controls
             var x = Width * getScale().X / 2;
             var y = Height * getScale().Y / 2;
 
-            if (radiusType == Common.RadiusMode.Avg)
+            if (RadiusType == Common.RadiusMode.Avg)
                 return (x + y) / 2;
             if (RadiusType == Common.RadiusMode.Max && x < y)
                 return y;
-            if (radiusType == Common.RadiusMode.Min && x > y)
+            if (RadiusType == Common.RadiusMode.Min && x > y)
                 return y;
             return x;
         }
@@ -247,7 +253,12 @@ namespace Bork.Controls
             return new PathGeometry(myPathFigureCollection);
         }
 
-        protected Common.RadiusMode radiusType;
+        public int getLoopNo()
+        {
+            return animationProfiles[currentAnimation].getLoopNo();
+        }
+        
         public Common.RadiusMode RadiusType { get; set; }
+        public bool IsSingleUse { get; set; }
     }
 }
