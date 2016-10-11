@@ -103,9 +103,10 @@ namespace Bork
                 markedForDeletion.Clear();
                 foreach (var ctrl in grid.Children)
                 {
-                    if (ctrl is GameDisplayObject)
+                    var gdo = ctrl as GameDisplayObject;
+                    var ri = ctrl as RichImage;
+                    if (gdo != null)
                     {
-                        var gdo = (GameDisplayObject)ctrl;
                         if (Common.displayBoundingBox)
                         {
                             var box = gdo.getBoundingBoxGeometry(false);
@@ -120,9 +121,8 @@ namespace Bork
                         gdo.Update(dt);
                         checkIfSingleUseFinished(gdo);
                     }
-                    else if(ctrl is RichImage)
+                    else if(ri != null)
                     {
-                        var ri = (RichImage)ctrl;
                         ri.Update(dt);
                         checkIfSingleUseFinished(ri);
                     }
@@ -135,9 +135,9 @@ namespace Bork
             if (!singleUseSpriteLifetimes.ContainsKey(image.id) 
                 || singleUseSpriteLifetimes[image.id] > image.getLoopNo())
                 return;
-            if (image is GameDisplayObject)
+            var gdo = (GameDisplayObject)image;
+            if (gdo != null)
             {
-                var gdo = (GameDisplayObject)image;
                 gdo.kill(-1 * gdo.HP);
             }
             markedForDeletion.Add(image);
@@ -184,10 +184,8 @@ namespace Bork
             beingDragged = null;
             foreach (var ctrl in grid.Children)
             {
-                if (!(ctrl is GameDisplayObject))
-                    continue;
                 var gdo = ctrl as GameDisplayObject;
-                if (gdo.boundingBoxContainsPoint(ptInGame))
+                if (gdo != null && gdo.boundingBoxContainsPoint(ptInGame))
                 {
                     beingDragged = (GameDisplayObject)ctrl;
                     break;
