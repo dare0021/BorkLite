@@ -43,5 +43,12 @@ namespace Bork.Helpers
 
             return myLineSegment;
         }
+
+        public static double getAngleBetween(Vec2 a, Vec2 b)
+        {
+            // X and Y positions inverted since we're using heading (CW)
+            // when Math.Atan2() assumes CCW
+            return Common.getDegrees(Math.Atan2(b.X - a.X, b.Y - a.Y));
+        }
     }
 }
