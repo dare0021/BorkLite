@@ -69,7 +69,7 @@ namespace Bork
             grid.Children.Add(animtest);
 
             iter2.TrackingTarget = trackerTarget;
-            iter2.Name = "firing test";
+            iter2.Name = "firing_test";
 
             var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", true, 1, 3, 1);
             singleusetest.setPosition(200, 0);
@@ -233,11 +233,14 @@ namespace Bork
             switch (e.Key)
             {
                 case Key.Space:
-                    var gdo = (GameDisplayObject)getChildByName("firing test");
-                    // get gdo's rotation
-                    // spawn another GDO using above rotation
-                    // launch using target speed or something
-                    // reorder z-order to put the new sprite under gdo
+                    var parent = (GameDisplayObject)getChildByName("firing_test");
+                    var child = new GameDisplayObject(Bork.Properties.Resources.DummyImg1);
+                    child.setPosition(parent.getPosition());
+                    child.setRotation(parent.getRotation());
+                    child.setSize(42, 42);
+                    child.Speed = 10 + parent.Speed;
+                    grid.Children.Add(child);
+                    Canvas.SetZIndex(child, Canvas.GetZIndex(parent) - 1);
                     break;
             }
         }
