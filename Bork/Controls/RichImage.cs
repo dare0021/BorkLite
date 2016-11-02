@@ -19,6 +19,7 @@ namespace Bork.Controls
         private ImageResourceMap imageResourceMap = new ImageResourceMap();
         private Dictionary<string, AnimationProfile> animationProfiles = new Dictionary<string, AnimationProfile>();
         private string currentImage = null, currentAnimation = null;
+        private bool autocull = true;
 
         private ScaleTransform scaleTransform;
         private RotateTransform rotateTransform;
@@ -260,5 +261,22 @@ namespace Bork.Controls
         
         public Common.RadiusMode RadiusType { get; set; }
         public bool IsSingleUse { get; set; }
+        
+        /// <summary>
+        /// Remove when off screen
+        /// No guarantee this will happen immediately or at all 
+        /// (if the object remains close to the screen)
+        /// </summary>
+        public bool AutoCull
+        {
+            get
+            {
+                return autocull;
+            }
+            set
+            {
+                autocull = value;
+            }
+        }
     }
 }

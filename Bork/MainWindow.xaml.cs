@@ -21,7 +21,8 @@ namespace Bork
 {
     public partial class MainWindow : Window
     {
-        private bool mouseDown = false;
+        private const int longtermInterval = 10000;
+        private const int autocullInterval = longtermInterval;
 
         /// <summary>
         /// Key to Timestamp (int, ms since 1970/1/1)
@@ -31,6 +32,8 @@ namespace Bork
         private GameDisplayObject beingDragged;
         private Dictionary<ulong, int> singleUseSpriteLifetimes = new Dictionary<ulong, int>();
         private List<UIElement> markedForDeletion = new List<UIElement>();
+
+        private bool mouseDown = false;
 
         public MainWindow()
         {
@@ -84,6 +87,10 @@ namespace Bork
             this.KeyDown += new KeyEventHandler(keyDown);
             this.KeyUp += new KeyEventHandler(keyUp);
 
+            var longtermTimer = new System.Timers.Timer(longtermInterval);
+            longtermTimer.Elapsed += OnLongtermTimer;
+            longtermTimer.Start();
+
             Task.Run(() =>
             {
                 DateTime timeKeeper = DateTime.Now;
@@ -98,10 +105,19 @@ namespace Bork
             });
         }
 
-        protected void Update(double dt)
+        private void OnLongtermTimer(object sender, ElapsedEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
+                processAutocull();
+            });
+        }
+
+        protected void Update(double dt)
+        { 
+            Dispatcher.Invoke(() =>
+            {
+                Console.WriteLine("CHILDCNT: " + grid.Children.Count);
                 if (Common.displayBoundingBox)
                 {
                     canvasClearEveryUpdate.Children.Clear();
@@ -249,13 +265,41 @@ namespace Bork
         {
             foreach (var c in grid.Children)
             {
-                var child = (FrameworkElement)c;
+                var child = c as FrameworkElement;
                 if (child == null)
                     continue;
                 if (child.Name == name)
                     return child;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Marks for deletion any RichImage object that is
+        /// more than 0.6 screeens away from the center.
+        /// Ignores that extremely large sprites can be removed
+        /// while still visible.
+        /// </summary>
+        private void processAutocull()
+        {
+            var autocullThresh = 0.6;
+            foreach (var child in grid.Children)
+            {
+                var ri = child as RichImage;
+                if (ri == null 
+                    || ri.AutoCull == false)
+                    continue;
+
+                var heightThresh = SystemParameters.FullPrimaryScreenHeight * autocullThresh;
+                var widthThresh = SystemParameters.FullPrimaryScreenWidth * autocullThresh;
+                var pos = ri.getPosition();
+                var x = Math.Abs(pos.X);
+                var y = Math.Abs(pos.Y);
+                if (x > widthThresh || y > heightThresh)
+                {
+                    markedForDeletion.Add(ri);
+                }
+            }
         }
     }
 }
