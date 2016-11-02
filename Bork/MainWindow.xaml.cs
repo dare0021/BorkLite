@@ -23,7 +23,10 @@ namespace Bork
     {
         private bool mouseDown = false;
 
-        private Dictionary<Key, DateTime> pressedKeys = new Dictionary<Key, DateTime>();
+        /// <summary>
+        /// Key to Timestamp (int, ms since 1970/1/1)
+        /// </summary>
+        private Dictionary<Key, int> pressedKeys = new Dictionary<Key, int>();
 
         private GameDisplayObject beingDragged;
         private Dictionary<ulong, int> singleUseSpriteLifetimes = new Dictionary<ulong, int>();
@@ -206,24 +209,28 @@ namespace Bork
 
         private void keyDown(object sender, KeyEventArgs e)
         {
-            pressedKeys[e.Key] = DateTime.Now;
-            testKeyListener();
+            if (!pressedKeys.Keys.Contains(e.Key))
+            {
+                // function called repeatedly as long as the key is pressed
+                pressedKeys[e.Key] = e.Timestamp;
+            }
         }
 
         private void keyUp(object sender, KeyEventArgs e)
         {
+            if (!pressedKeys.Keys.Contains(e.Key)) 
+                // I'm sure this is going to happen whether it makes sense or not.
+                return;
+            int pressed = pressedKeys[e.Key];
             pressedKeys.Remove(e.Key);
-            testKeyListener();
+            Console.WriteLine("COMP: " + (e.Timestamp - pressed));
+            if (e.Timestamp - pressed <= Common.keyTypeThresh)
+                keyTyped(sender, e, pressed);
         }
 
-        private void testKeyListener()
+        private void keyTyped(object sender, KeyEventArgs e, int pressed)
         {
-            string output = "";
-            foreach (Key k in pressedKeys.Keys)
-            {
-                output += k.ToString() + "\t";
-            }
-            aruLabel.Content = output;
+            aruLabel.Content += e.Key.ToString();
         }
     }
 }

@@ -14,6 +14,11 @@ namespace Bork.Helpers
 
         public static bool displayBoundingBox = true;
 
+        /// <summary>
+        /// Time in ms where if keyUp() is called within this time keyTyped() is called
+        /// </summary>
+        public static float keyTypeThresh = 200;
+
         public enum RadiusMode
         {
             Min, Avg, Max
@@ -73,6 +78,16 @@ namespace Bork.Helpers
             var retval = nextUID;
             nextUID++;
             return retval;
+        }
+
+        /// <summary>
+        /// Correct to the 
+        /// </summary>
+        /// <param name="ts"></param>
+        /// <returns></returns>
+        public static DateTime timestampToDateTime(int ts)
+        {
+            return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(ts).ToLocalTime();
         }
     }
 }
