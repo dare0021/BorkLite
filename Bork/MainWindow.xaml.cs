@@ -22,6 +22,9 @@ namespace Bork
     public partial class MainWindow : Window
     {
         private bool mouseDown = false;
+
+        private Dictionary<Key, DateTime> pressedKeys = new Dictionary<Key, DateTime>();
+
         private GameDisplayObject beingDragged;
         private Dictionary<ulong, int> singleUseSpriteLifetimes = new Dictionary<ulong, int>();
         private List<UIElement> markedForDeletion = new List<UIElement>();
@@ -73,6 +76,9 @@ namespace Bork
             singleusetest2.setPosition(-200, 0);
             registerAsSingleUseVideo(singleusetest2, 3);
             grid.Children.Add(singleusetest2);
+            
+            this.KeyDown += new KeyEventHandler(keyDown);
+            this.KeyUp += new KeyEventHandler(keyUp);
 
             Task.Run(() =>
             {
@@ -196,6 +202,28 @@ namespace Bork
         private void grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
             mouseDown = false;
+        }
+
+        private void keyDown(object sender, KeyEventArgs e)
+        {
+            pressedKeys[e.Key] = DateTime.Now;
+            testKeyListener();
+        }
+
+        private void keyUp(object sender, KeyEventArgs e)
+        {
+            pressedKeys.Remove(e.Key);
+            testKeyListener();
+        }
+
+        private void testKeyListener()
+        {
+            string output = "";
+            foreach (Key k in pressedKeys.Keys)
+            {
+                output += k.ToString() + "\t";
+            }
+            aruLabel.Content = output;
         }
     }
 }
