@@ -69,6 +69,7 @@ namespace Bork
             grid.Children.Add(animtest);
 
             iter2.TrackingTarget = trackerTarget;
+            iter2.Name = "firing test";
 
             var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", true, 1, 3, 1);
             singleusetest.setPosition(200, 0);
@@ -223,14 +224,35 @@ namespace Bork
                 return;
             int pressed = pressedKeys[e.Key];
             pressedKeys.Remove(e.Key);
-            Console.WriteLine("COMP: " + (e.Timestamp - pressed));
-            if (e.Timestamp - pressed <= Common.keyTypeThresh)
+            if (e.Timestamp - pressed < Common.keyTypeThresh)
                 keyTyped(sender, e, pressed);
         }
 
         private void keyTyped(object sender, KeyEventArgs e, int pressed)
         {
-            aruLabel.Content += e.Key.ToString();
+            switch (e.Key)
+            {
+                case Key.Space:
+                    var gdo = (GameDisplayObject)getChildByName("firing test");
+                    // get gdo's rotation
+                    // spawn another GDO using above rotation
+                    // launch using target speed or something
+                    // reorder z-order to put the new sprite under gdo
+                    break;
+            }
+        }
+
+        private UIElement getChildByName(string name)
+        {
+            foreach (var c in grid.Children)
+            {
+                var child = (FrameworkElement)c;
+                if (child == null)
+                    continue;
+                if (child.Name == name)
+                    return child;
+            }
+            return null;
         }
     }
 }
