@@ -12,13 +12,15 @@ namespace Bork.Controls
     /// </summary>
     class GameDisplayObject : RichImage
     {
-        public GameDisplayObject(string path, bool animated = false, int frameCount = 0, double duration = 0, int from = 0) 
+        private readonly bool collidable;
+        public GameDisplayObject(string path, bool collidable = false,  bool animated = false, int frameCount = 0, double duration = 0, int from = 0) 
             : base(path, animated, frameCount, duration, from)
         {
             RotationMode = Common.RotationMode.Manual;
 
             MaxSpeed = double.MaxValue;
             MaxRotationSpeed = double.MaxValue;
+            this.collidable = collidable;
         }
 
         new public void Update(double dt)
@@ -119,6 +121,11 @@ namespace Bork.Controls
             {
                 trackingTarget = value;
             }
+        }
+
+        public bool isCollidable()
+        {
+            return collidable;
         }
 
         protected List<string> tags = new List<string>();

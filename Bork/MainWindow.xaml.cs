@@ -22,7 +22,10 @@ namespace Bork
     public partial class MainWindow : Window
     {
         private const int longtermInterval = 10000;
-        private const int autocullInterval = longtermInterval;
+        /// <summary>
+        /// 20Hz
+        /// </summary>
+        private const int shorttermInterval = 1000/20;        
 
         /// <summary>
         /// Key to Timestamp (int, ms since 1970/1/1)
@@ -68,18 +71,18 @@ namespace Bork
             iter2.MaxRotationSpeed = 5;
             iter2.RotationMode = Common.RotationMode.Tracking;
 
-            var animtest = new GameDisplayObject("videos/deathAnimationDummy", true, 4, 0.5, 1);
+            var animtest = new GameDisplayObject("videos/deathAnimationDummy", false, true, 4, 0.5, 1);
             grid.Children.Add(animtest);
 
             iter2.TrackingTarget = trackerTarget;
             iter2.Name = "firing_test";
 
-            var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", true, 1, 3, 1);
+            var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", false, true, 1, 3, 1);
             singleusetest.setPosition(200, 0);
             registerAsSingleUseVideo(singleusetest, 1);
             grid.Children.Add(singleusetest);
 
-            var singleusetest2 = new GameDisplayObject("videos/deathAnimationDummy", true, 4, 0.2, 1);
+            var singleusetest2 = new GameDisplayObject("videos/deathAnimationDummy", false, true, 4, 0.2, 1);
             singleusetest2.setPosition(-200, 0);
             registerAsSingleUseVideo(singleusetest2, 3);
             grid.Children.Add(singleusetest2);
@@ -90,6 +93,10 @@ namespace Bork
             var longtermTimer = new System.Timers.Timer(longtermInterval);
             longtermTimer.Elapsed += OnLongtermTimer;
             longtermTimer.Start();
+
+            var shorttermTimer = new System.Timers.Timer(longtermInterval);
+            shorttermTimer.Elapsed += OnShorttermTimer;
+            shorttermTimer.Start();
 
             Task.Run(() =>
             {
@@ -110,6 +117,14 @@ namespace Bork
             Dispatcher.Invoke(() =>
             {
                 processAutocull();
+            });
+        }
+
+        private void OnShorttermTimer(object sender, ElapsedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                processCollisionDetection();
             });
         }
 
@@ -300,6 +315,19 @@ namespace Bork
                     markedForDeletion.Add(ri);
                 }
             }
+        }
+
+        private void processCollisionDetection()
+        {
+            foreach (var child in grid.Children)
+            {
+                var gdo = child as GameDisplayObject;
+                if (gdo == null
+                    || gdo.isCollidable() == false)
+                    continue;
+            }
+            // do something here
+            // also, how would we do this exactly? judging area vs area?
         }
     }
 }
