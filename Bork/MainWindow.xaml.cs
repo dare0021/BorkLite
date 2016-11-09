@@ -327,7 +327,17 @@ namespace Bork
                     continue;
             }
             // do something here
-            // also, how would we do this exactly? judging area vs area?
+            // also, how would we do this exactly?
+            //
+            // problem: brute force checking is n^n. thats nono
+            // only do projectile vs ship? reduces complexity to b*s
+            //      that means no ship to ship collisions
+            //      check if the object moved. if not, skip.
+            //      check if the collision detection was done already -> (n^n)/2
+            //          that just shifts the big nono from CPU time to RAM usage
+            // use the grid idea from Cosmos
+            //http://gamedev.stackexchange.com/questions/57470/are-collision-detection-always-on2
+            //O(n) algorithm is available, but the grid partition algorithm is better in practice
         }
     }
 }
