@@ -38,6 +38,8 @@ namespace Bork
 
         private bool mouseDown = false;
 
+        private Mutex updateMutex = new Mutex();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,16 +55,14 @@ namespace Bork
                                 new Vec2(300,-300),
                                 new Vec2(-300,-300),
                                 new Vec2(-300,300) };
-            RichImage trackerTarget = null;
             for (int i=0; i<4; i++)
             {
                 var iter = new RichImage("videos/deathAnimationDummy/" + i + ".png");
                 iter.setPosition(locations[i]);
                 iter.setSize(32, 32);
                 grid.Children.Add(iter);
-                trackerTarget = iter;
             }
-            var iter2 = new GameDisplayObject(Bork.Properties.Resources.DummyImg2);
+            var iter2 = new GameDisplayObject(Bork.Properties.Resources.DummyImg2, Modules.CollisionDetection.CollisionTypes.Ship);
             iter2.setPosition(rng.Next((int)(Width / -2), (int)(Width / 2)),
                              rng.Next((int)(Height / -2), (int)(Height / 2)));
             iter2.setSize(iter2.Source.Width / 10, iter2.Source.Height / 10);
@@ -71,18 +71,19 @@ namespace Bork
             iter2.MaxRotationSpeed = 5;
             iter2.RotationMode = Common.RotationMode.Tracking;
 
-            var animtest = new GameDisplayObject("videos/deathAnimationDummy", false, true, 4, 0.5, 1);
+            var animtest = new GameDisplayObject("videos/deathAnimationDummy", Modules.CollisionDetection.CollisionTypes.Ship, true, 4, 0.5, 1);
             grid.Children.Add(animtest);
-
-            iter2.TrackingTarget = trackerTarget;
+            
+            iter2.TrackingTarget = animtest;
             iter2.Name = "firing_test";
+            iter2.Allegiance = iter2.Name;
 
-            var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", false, true, 1, 3, 1);
+            var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", Modules.CollisionDetection.CollisionTypes.None, true, 1, 3, 1);
             singleusetest.setPosition(200, 0);
             registerAsSingleUseVideo(singleusetest, 1);
             grid.Children.Add(singleusetest);
 
-            var singleusetest2 = new GameDisplayObject("videos/deathAnimationDummy", false, true, 4, 0.2, 1);
+            var singleusetest2 = new GameDisplayObject("videos/deathAnimationDummy", Modules.CollisionDetection.CollisionTypes.None, true, 4, 0.2, 1);
             singleusetest2.setPosition(-200, 0);
             registerAsSingleUseVideo(singleusetest2, 3);
             grid.Children.Add(singleusetest2);
@@ -94,7 +95,7 @@ namespace Bork
             longtermTimer.Elapsed += OnLongtermTimer;
             longtermTimer.Start();
 
-            var shorttermTimer = new System.Timers.Timer(longtermInterval);
+            var shorttermTimer = new System.Timers.Timer(shorttermInterval);
             shorttermTimer.Elapsed += OnShorttermTimer;
             shorttermTimer.Start();
 
@@ -114,25 +115,29 @@ namespace Bork
 
         private void OnLongtermTimer(object sender, ElapsedEventArgs e)
         {
+            updateMutex.WaitOne();
             Dispatcher.Invoke(() =>
             {
                 processAutocull();
             });
+            updateMutex.ReleaseMutex();
         }
 
         private void OnShorttermTimer(object sender, ElapsedEventArgs e)
         {
+            updateMutex.WaitOne();
             Dispatcher.Invoke(() =>
             {
                 processCollisionDetection();
             });
+            updateMutex.ReleaseMutex();
         }
 
         protected void Update(double dt)
-        { 
+        {
+            updateMutex.WaitOne();
             Dispatcher.Invoke(() =>
             {
-                Console.WriteLine("CHILDCNT: " + grid.Children.Count);
                 if (Common.displayBoundingBox)
                 {
                     canvasClearEveryUpdate.Children.Clear();
@@ -169,6 +174,7 @@ namespace Bork
                     }
                 }
             });
+            updateMutex.ReleaseMutex();
         }
 
         private void checkIfSingleUseFinished(RichImage image)
@@ -265,7 +271,8 @@ namespace Bork
             {
                 case Key.Space:
                     var parent = (GameDisplayObject)getChildByName("firing_test");
-                    var child = new GameDisplayObject(Bork.Properties.Resources.DummyImg1);
+                    var child = new GameDisplayObject(Bork.Properties.Resources.DummyImg1, Modules.CollisionDetection.CollisionTypes.Projectile);
+                    child.Allegiance = parent.Name;
                     child.setPosition(parent.getPosition());
                     child.setRotation(parent.getRotation());
                     child.setSize(42, 42);
@@ -319,25 +326,17 @@ namespace Bork
 
         private void processCollisionDetection()
         {
+            Modules.CollisionDetection.Update();
             foreach (var child in grid.Children)
             {
                 var gdo = child as GameDisplayObject;
-                if (gdo == null
-                    || gdo.isCollidable() == false)
+                if (gdo == null || 
+                    gdo.CollisionType != Modules.CollisionDetection.CollisionTypes.Projectile)
                     continue;
+
+                if (gdo.isKilled())
+                    markedForDeletion.Add(gdo);
             }
-            // do something here
-            // also, how would we do this exactly?
-            //
-            // problem: brute force checking is n^n. thats nono
-            // only do projectile vs ship? reduces complexity to b*s
-            //      that means no ship to ship collisions
-            //      check if the object moved. if not, skip.
-            //      check if the collision detection was done already -> (n^n)/2
-            //          that just shifts the big nono from CPU time to RAM usage
-            // use the grid idea from Cosmos
-            //http://gamedev.stackexchange.com/questions/57470/are-collision-detection-always-on2
-            //O(n) algorithm is available, but the grid partition algorithm is better in practice
         }
     }
 }

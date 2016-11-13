@@ -12,15 +12,28 @@ namespace Bork.Controls
     /// </summary>
     class GameDisplayObject : RichImage
     {
-        private readonly bool collidable;
-        public GameDisplayObject(string path, bool collidable = false,  bool animated = false, int frameCount = 0, double duration = 0, int from = 0) 
+        public GameDisplayObject(string path, Modules.CollisionDetection.CollisionTypes collisionType = Modules.CollisionDetection.CollisionTypes.None,  bool animated = false, int frameCount = 0, double duration = 0, int from = 0) 
             : base(path, animated, frameCount, duration, from)
         {
             RotationMode = Common.RotationMode.Manual;
 
             MaxSpeed = double.MaxValue;
             MaxRotationSpeed = double.MaxValue;
-            this.collidable = collidable;
+            Allegiance = "";
+
+            CollisionType = collisionType;
+            if (collisionType != Modules.CollisionDetection.CollisionTypes.None)
+            {
+                Modules.CollisionDetection.addObject(this);
+            }
+        }
+
+        ~GameDisplayObject()
+        {
+            if (CollisionType != Modules.CollisionDetection.CollisionTypes.None)
+            {
+                Modules.CollisionDetection.removeObject(this);
+            }
         }
 
         new public void Update(double dt)
@@ -101,7 +114,7 @@ namespace Bork.Controls
             set
             {
                 hp = value > MaxHP ? MaxHP : value;
-                if (hp < 0)
+                if (hp <= 0)
                     kill(value);
             }
         }
@@ -125,7 +138,7 @@ namespace Bork.Controls
 
         public bool isCollidable()
         {
-            return collidable;
+            return Modules.CollisionDetection.contains(this);
         }
 
         protected List<string> tags = new List<string>();
@@ -146,13 +159,39 @@ namespace Bork.Controls
             }
         }
 
+        public bool isKilled()
+        {
+            return tags.Contains("killed");
+        }
+
+        public Modules.CollisionDetection.CollisionTypes CollisionType { get; set; }
+        /// <summary>
+        /// Prevent friendly fire / shooting yourself when firing
+        /// Depending on how it's used
+        /// </summary>
+        public string Allegiance { get; set; }
+
+        /// <summary>
+        /// Called by Modules.CollisionDetection
+        /// Calls both objects
+        /// </summary>
+        /// <param name="other">the object this collided with</param>
+        public void collision(GameDisplayObject other)
+        {
+            if (CollisionType == Modules.CollisionDetection.CollisionTypes.Projectile)
+            {
+                HP = 0;
+            }
+        }
+
         /// <summary>
         /// Run when the HP first reaches < 0
         /// </summary>
         /// <param name="dHP">The hp modifier that resulted in this function being called</param>
         public void kill(double dHP)
         {
-
+            tags.Add("killed");
+            Console.WriteLine("OBJECT NO." + this.id + " of type " + CollisionType + " died");
         }
     }
 }
