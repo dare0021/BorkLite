@@ -132,6 +132,24 @@
     <Resource Include="videos\deathAnimationDummy\3.png" />
     <Resource Include="videos\deathAnimationDummy\4.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="videos\explosion\0.png" />
+    <Resource Include="videos\explosion\1.png" />
+    <Resource Include="videos\explosion\10.png" />
+    <Resource Include="videos\explosion\11.png" />
+    <Resource Include="videos\explosion\12.png" />
+    <Resource Include="videos\explosion\13.png" />
+    <Resource Include="videos\explosion\14.png" />
+    <Resource Include="videos\explosion\15.png" />
+    <Resource Include="videos\explosion\2.png" />
+    <Resource Include="videos\explosion\3.png" />
+    <Resource Include="videos\explosion\4.png" />
+    <Resource Include="videos\explosion\5.png" />
+    <Resource Include="videos\explosion\6.png" />
+    <Resource Include="videos\explosion\7.png" />
+    <Resource Include="videos\explosion\8.png" />
+    <Resource Include="videos\explosion\9.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

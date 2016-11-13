@@ -191,7 +191,6 @@ namespace Bork.Controls
         public void kill(double dHP)
         {
             tags.Add("killed");
-            Console.WriteLine("OBJECT NO." + this.id + " of type " + CollisionType + " died");
         }
     }
 }

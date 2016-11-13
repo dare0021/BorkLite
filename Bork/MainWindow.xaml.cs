@@ -35,6 +35,7 @@ namespace Bork
         private GameDisplayObject beingDragged;
         private Dictionary<ulong, int> singleUseSpriteLifetimes = new Dictionary<ulong, int>();
         private List<UIElement> markedForDeletion = new List<UIElement>();
+        private List<UIElement> markedForAddition = new List<UIElement>();
 
         private bool mouseDown = false;
 
@@ -81,12 +82,10 @@ namespace Bork
             var singleusetest = new GameDisplayObject("videos/deathAnimationDummy", Modules.CollisionDetection.CollisionTypes.None, true, 1, 3, 1);
             singleusetest.setPosition(200, 0);
             registerAsSingleUseVideo(singleusetest, 1);
-            grid.Children.Add(singleusetest);
 
             var singleusetest2 = new GameDisplayObject("videos/deathAnimationDummy", Modules.CollisionDetection.CollisionTypes.None, true, 4, 0.2, 1);
             singleusetest2.setPosition(-200, 0);
             registerAsSingleUseVideo(singleusetest2, 3);
-            grid.Children.Add(singleusetest2);
             
             this.KeyDown += new KeyEventHandler(keyDown);
             this.KeyUp += new KeyEventHandler(keyUp);
@@ -173,6 +172,11 @@ namespace Bork
                         checkIfSingleUseFinished(ri);
                     }
                 }
+                foreach (var obj in markedForAddition)
+                {
+                    grid.Children.Add(obj);
+                }
+                markedForAddition.Clear();
             });
             updateMutex.ReleaseMutex();
         }
@@ -208,6 +212,7 @@ namespace Bork
         public void registerAsSingleUseVideo(RichImage image, int loops = 1)
         {
             singleUseSpriteLifetimes[image.id] = loops;
+            markedForAddition.Add(image);
         }
 
         private void grid_MouseMove(object sender, MouseEventArgs e)
@@ -335,7 +340,12 @@ namespace Bork
                     continue;
 
                 if (gdo.isKilled())
+                {
+                    var singleuseExplosion = new GameDisplayObject("videos/explosion", Modules.CollisionDetection.CollisionTypes.None, true, 16, 1.0/60);
+                    singleuseExplosion.setPosition(gdo.getPosition());
+                    registerAsSingleUseVideo(singleuseExplosion, 1);
                     markedForDeletion.Add(gdo);
+                }
             }
         }
     }

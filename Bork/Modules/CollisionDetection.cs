@@ -133,7 +133,6 @@ namespace Bork.Modules
 
                 if (state[key] == true)
                 {
-                    Console.WriteLine("COLLISION: " + key.Item1.id + " & " + key.Item2.id);
                     key.Item1.collision(key.Item2);
                     key.Item2.collision(key.Item1);
                 }
