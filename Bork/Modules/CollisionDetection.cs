@@ -235,12 +235,58 @@ namespace Bork.Modules
         /// <summary>
         /// Ray traces from the given object and returns the first object that the ray collides with
         /// 1) use intersection checking to cull the object list to a list of possible objects
-        /// 2) continuously check along the ray's path whether the ray's constituent points are 
-        ///     within anyone's bounding box
+        /// 2) check the intersections detected to find the closest one
         /// </summary>
-        static public GameDisplayObject rayTrace(GameDisplayObject from, float resolution)
+        static public GameDisplayObject rayTrace(GameDisplayObject from, float rayLength, out Vec2 intersection, bool checkProjectilesAlso = false)
         {
-            return null;
+            Vec2 origin = from.getPosition();
+            Vec2 target = origin + new Vec2(rayLength * Math.Cos(from.getRotation() * Math.PI / 180),
+                                            rayLength * Math.Sin(from.getRotation() * Math.PI / 180));
+            intersection = null;
+            var candidateList = new List<Pair<GameDisplayObject, Vec2>>();
+
+            foreach (var child in shipList)
+            {
+                var quad = child.getBoundingBox();
+                if (LineSegementsIntersect(origin, target, quad.v0, quad.v1, out intersection))
+                    candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+                if (LineSegementsIntersect(origin, target, quad.v1, quad.v2, out intersection))
+                    candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+                if (LineSegementsIntersect(origin, target, quad.v2, quad.v3, out intersection))
+                    candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+                if (LineSegementsIntersect(origin, target, quad.v3, quad.v0, out intersection))
+                    candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+            }
+            if (checkProjectilesAlso)
+            {
+                foreach(var child in projectileList)
+                {
+                    var quad = child.getBoundingBox();
+                    if (LineSegementsIntersect(origin, target, quad.v0, quad.v1, out intersection))
+                        candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+                    if (LineSegementsIntersect(origin, target, quad.v1, quad.v2, out intersection))
+                        candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+                    if (LineSegementsIntersect(origin, target, quad.v2, quad.v3, out intersection))
+                        candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+                    if (LineSegementsIntersect(origin, target, quad.v3, quad.v0, out intersection))
+                        candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
+                }
+            }
+            if (candidateList.Count < 1)
+                return null;
+            double min = float.MaxValue;
+            GameDisplayObject outval = null;
+            foreach (var pair in candidateList)
+            {
+                double dist = (pair.Y - from.getPosition()).getLength();
+                if (dist < min)
+                {
+                    outval = pair.X;
+                    min = dist;
+                    intersection = pair.Y;
+                }
+            }
+            return outval;
         }
     }
 }

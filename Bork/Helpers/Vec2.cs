@@ -11,6 +11,12 @@ namespace Bork.Helpers
         public double X { get; set; }
         public double Y { get; set; }
 
+        public Vec2(Vec2 v)
+        {
+            X = v.X;
+            Y = v.Y;
+        }
+
         public Vec2(Tuple<double, double> v)
         {
             X = v.Item1;
