@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bork.Helpers;
+using System.Windows.Controls;
 
 namespace Bork.Controls
 {
@@ -191,6 +192,24 @@ namespace Bork.Controls
         public void kill(double dHP)
         {
             tags.Add("killed");
+        }
+
+        /// <summary>
+        /// Creates and adds a child
+        /// Returns the child for possible further use
+        /// </summary>
+        public GameDisplayObject spawnChild(UIElementCollection addTo, Vec2 size, float speed)
+        {
+            var child = new GameDisplayObject(Bork.Properties.Resources.DummyImg1, Modules.CollisionDetection.CollisionTypes.Projectile);
+            child.Allegiance = Name;
+            child.setPosition(getPosition());
+            child.setRotation(getRotation());
+            child.setSize(size);
+            child.Speed = speed + Speed;
+            
+            addTo.Add(child);
+            Canvas.SetZIndex(child, Canvas.GetZIndex(this) - 1);
+            return child;
         }
     }
 }

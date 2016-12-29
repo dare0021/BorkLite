@@ -270,20 +270,18 @@ namespace Bork
                 keyTyped(sender, e, pressed);
         }
 
+        /// <summary>
+        /// Not a built-in function
+        /// </summary>
         private void keyTyped(object sender, KeyEventArgs e, int pressed)
         {
+            var parent = (GameDisplayObject)getChildByName("firing_test");
             switch (e.Key)
             {
                 case Key.Space:
-                    var parent = (GameDisplayObject)getChildByName("firing_test");
-                    var child = new GameDisplayObject(Bork.Properties.Resources.DummyImg1, Modules.CollisionDetection.CollisionTypes.Projectile);
-                    child.Allegiance = parent.Name;
-                    child.setPosition(parent.getPosition());
-                    child.setRotation(parent.getRotation());
-                    child.setSize(42, 42);
-                    child.Speed = 10 + parent.Speed;
-                    grid.Children.Add(child);
-                    Canvas.SetZIndex(child, Canvas.GetZIndex(parent) - 1);
+                    parent.spawnChild(grid.Children, new Vec2(42, 42), 110);
+                    break;
+                case Key.LeftCtrl:
                     break;
             }
         }
