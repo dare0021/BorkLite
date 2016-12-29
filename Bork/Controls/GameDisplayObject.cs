@@ -195,12 +195,11 @@ namespace Bork.Controls
         }
 
         /// <summary>
-        /// Creates and adds a child
+        /// Handles child-parent property inheritance
         /// Returns the child for possible further use
         /// </summary>
-        public GameDisplayObject spawnChild(UIElementCollection addTo, Vec2 size, float speed)
+        public GameDisplayObject spawnChild(GameDisplayObject child, UIElementCollection addTo, Vec2 size, float speed)
         {
-            var child = new GameDisplayObject(Bork.Properties.Resources.DummyImg1, Modules.CollisionDetection.CollisionTypes.Projectile);
             child.Allegiance = Name;
             child.setPosition(getPosition());
             child.setRotation(getRotation());

@@ -126,4 +126,7 @@
   <data name="DummyImg2" xml:space="preserve">
     <value>images/test2.png</value>
   </data>
+  <data name="LazerTest" xml:space="preserve">
+    <value>images/beam_test.png</value>
+  </data>
 </root>

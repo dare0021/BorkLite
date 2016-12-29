@@ -236,6 +236,8 @@ namespace Bork.Modules
         /// Ray traces from the given object and returns the first object that the ray collides with
         /// 1) use intersection checking to cull the object list to a list of possible objects
         /// 2) check the intersections detected to find the closest one
+        /// 
+        /// Returns null if nothing found
         /// </summary>
         static public GameDisplayObject rayTrace(GameDisplayObject from, float rayLength, out Vec2 intersection, bool checkProjectilesAlso = false)
         {
@@ -247,6 +249,8 @@ namespace Bork.Modules
 
             foreach (var child in shipList)
             {
+                if (from.Allegiance == child.Allegiance)
+                    continue;
                 var quad = child.getBoundingBox();
                 if (LineSegementsIntersect(origin, target, quad.v0, quad.v1, out intersection))
                     candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));
@@ -261,6 +265,8 @@ namespace Bork.Modules
             {
                 foreach(var child in projectileList)
                 {
+                    if (from.Allegiance == child.Allegiance)
+                        continue;
                     var quad = child.getBoundingBox();
                     if (LineSegementsIntersect(origin, target, quad.v0, quad.v1, out intersection))
                         candidateList.Add(new Pair<GameDisplayObject, Vec2>(child, new Vec2(intersection)));

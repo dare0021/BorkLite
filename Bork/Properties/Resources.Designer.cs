@@ -79,6 +79,15 @@ namespace Bork.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to images/beam_test.png.
+        /// </summary>
+        public static string LazerTest {
+            get {
+                return ResourceManager.GetString("LazerTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to images/image.jpg.
         /// </summary>
         public static string TestAru {

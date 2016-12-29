@@ -14,8 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 using Bork.Controls;
 using Bork.Helpers;
+using Bork.Modules;
 
 namespace Bork
 {
@@ -110,6 +112,9 @@ namespace Bork
                     timeKeeper = now;
                 }
             });
+
+
+            Debug.Assert(!UnitTest.run());
         }
 
         private void OnLongtermTimer(object sender, ElapsedEventArgs e)
@@ -276,12 +281,37 @@ namespace Bork
         private void keyTyped(object sender, KeyEventArgs e, int pressed)
         {
             var parent = (GameDisplayObject)getChildByName("firing_test");
+            GameDisplayObject child = null;
             switch (e.Key)
             {
                 case Key.Space:
-                    parent.spawnChild(grid.Children, new Vec2(42, 42), 110);
+                    child = new GameDisplayObject(Bork.Properties.Resources.DummyImg1, CollisionDetection.CollisionTypes.Projectile);
+                    parent.spawnChild(child, grid.Children, new Vec2(42, 42), 110);
                     break;
                 case Key.LeftCtrl:
+                    Vec2 rayDest = null;
+                    float rayLen = 500;
+                    var collisionObj = CollisionDetection.rayTrace(parent, rayLen, out rayDest);
+                    if (collisionObj == null)
+                    {
+                        Console.Out.WriteLine("COLFAIL");
+                        rayDest = new Vec2(0, 0);
+                        rayDest.X = rayLen * Math.Cos(parent.getRotation() * Math.PI / 180);
+                        rayDest.Y = rayLen * Math.Sin(parent.getRotation() * Math.PI / 180);
+                        rayDest += parent.getPosition();
+                    }
+                    else
+                    {
+                        Console.Out.WriteLine("COLSUCCESS " + collisionObj.Name);
+                        rayLen = (float)(parent.getPosition() - rayDest).getLength();
+                    }
+                    child = new GameDisplayObject(Bork.Properties.Resources.LazerTest, CollisionDetection.CollisionTypes.None);
+                    child = parent.spawnChild(child, grid.Children, new Vec2(10, rayLen), 0);
+                    child.setPosition((parent.getPosition() - rayDest)/2);
+                    child.setScale(1, rayLen);
+                    Console.Out.WriteLine("PV  " + parent.getPosition());
+                    Console.Out.WriteLine("RDV " + rayDest);
+                    Console.Out.WriteLine("CV  " + child.getPosition());
                     break;
             }
         }
