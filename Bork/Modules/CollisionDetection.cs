@@ -242,10 +242,13 @@ namespace Bork.Modules
         static public GameDisplayObject rayTrace(GameDisplayObject from, float rayLength, out Vec2 intersection, bool checkProjectilesAlso = false)
         {
             Vec2 origin = from.getPosition();
-            Vec2 target = origin + new Vec2(rayLength * Math.Cos(from.getRotation() * Math.PI / 180),
-                                            rayLength * Math.Sin(from.getRotation() * Math.PI / 180));
+            Vec2 target = origin + new Vec2(rayLength * Math.Sin(from.getRotation() * Math.PI / 180),
+                                            rayLength * Math.Cos(from.getRotation() * Math.PI / 180));
             intersection = null;
             var candidateList = new List<Pair<GameDisplayObject, Vec2>>();
+            Console.WriteLine("ROT: " + from.getRotation());
+            Console.WriteLine("Origin: " + origin);
+            Console.WriteLine("Target: " + target);
 
             foreach (var child in shipList)
             {
