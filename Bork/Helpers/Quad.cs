@@ -42,5 +42,10 @@ namespace Bork.Helpers
             v2 *= scale;
             v3 *= scale;
         }
+
+        public override string ToString()
+        {
+            return "{" + " " + v0 + " " + v1 + " " + v2 + " " + v3 + "}";
+        }
     }
 }

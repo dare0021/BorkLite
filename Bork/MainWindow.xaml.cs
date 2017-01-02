@@ -114,7 +114,7 @@ namespace Bork
             });
 
 
-            Debug.Assert(!UnitTest.run());
+            Debug.Assert(UnitTest.run());
         }
 
         private void OnLongtermTimer(object sender, ElapsedEventArgs e)
