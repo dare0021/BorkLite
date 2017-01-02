@@ -294,20 +294,18 @@ namespace Bork
                     var collisionObj = CollisionDetection.rayTrace(parent, rayLen, out rayDest);
                     if (collisionObj == null)
                     {
-                        Console.Out.WriteLine("COLFAIL");
                         rayDest = new Vec2(0, 0);
-                        rayDest.X = rayLen * Math.Cos(parent.getRotation() * Math.PI / 180);
-                        rayDest.Y = rayLen * Math.Sin(parent.getRotation() * Math.PI / 180);
+                        rayDest.X = rayLen * Math.Sin(parent.getRotation() * Math.PI / 180);
+                        rayDest.Y = rayLen * Math.Cos(parent.getRotation() * Math.PI / 180);
                         rayDest += parent.getPosition();
                     }
                     else
                     {
-                        Console.Out.WriteLine("COLSUCCESS " + collisionObj.Name);
                         rayLen = (float)(parent.getPosition() - rayDest).getLength();
                     }
                     child = new GameDisplayObject(Bork.Properties.Resources.LazerTest, CollisionDetection.CollisionTypes.None);
                     child = parent.spawnChild(child, grid.Children, new Vec2(10, rayLen), 0);
-                    child.setPosition((parent.getPosition() - rayDest)/2);
+                    child.setPosition((parent.getPosition() + rayDest)/2);
                     child.setScale(1, rayLen);
                     Console.Out.WriteLine("PV  " + parent.getPosition());
                     Console.Out.WriteLine("RDV " + rayDest);
