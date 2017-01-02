@@ -198,16 +198,19 @@ namespace Bork.Controls
         /// Handles child-parent property inheritance
         /// Returns the child for possible further use
         /// </summary>
-        public GameDisplayObject spawnChild(GameDisplayObject child, UIElementCollection addTo, Vec2 size, float speed)
+        public GameDisplayObject spawnChild(GameDisplayObject child, UIElementCollection addTo, Vec2 size, float speed, bool inheritSpeed = true, bool addToCanvas = true)
         {
             child.Allegiance = Name;
             child.setPosition(getPosition());
             child.setRotation(getRotation());
             child.setSize(size);
-            child.Speed = speed + Speed;
-            
-            addTo.Add(child);
-            Canvas.SetZIndex(child, Canvas.GetZIndex(this) - 1);
+            child.Speed = inheritSpeed ? speed + Speed : speed;
+            child.setDepth(getDepth() - 1);
+
+            if (addToCanvas)
+            {
+                addTo.Add(child);
+            }
             return child;
         }
     }

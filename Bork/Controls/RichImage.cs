@@ -122,6 +122,16 @@ namespace Bork.Controls
             return x;
         }
 
+        public int getDepth()
+        {
+            return Canvas.GetZIndex(this);
+        }
+
+        public void setDepth(int z)
+        {
+            Canvas.SetZIndex(this, z);
+        }
+
         public double getRotation()
         {
             return -rotateTransform.Angle;

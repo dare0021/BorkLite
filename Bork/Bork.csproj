@@ -69,6 +69,7 @@
     <Compile Include="Helpers\Pair.cs" />
     <Compile Include="Helpers\Quad.cs" />
     <Compile Include="Helpers\ImageResourceMap.cs" />
+    <Compile Include="Helpers\VideoProfiles.cs" />
     <Compile Include="Helpers\Vec2.cs" />
     <Compile Include="Controls\RichImage.cs" />
     <Page Include="MainWindow.xaml">
@@ -153,6 +154,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\beam_test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="videos\beam\0.png" />
+    <Resource Include="videos\beam\1.png" />
+    <Resource Include="videos\beam\2.png" />
+    <Resource Include="videos\beam\3.png" />
+    <Resource Include="videos\beam\4.png" />
+    <Resource Include="videos\beam\5.png" />
+    <Resource Include="videos\beam\6.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

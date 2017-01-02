@@ -155,7 +155,7 @@ namespace Bork
                 {
                     var gdo = ctrl as GameDisplayObject;
                     var ri = ctrl as RichImage;
-                    if (gdo != null)
+                    if (gdo != null && gdo.CollisionType != CollisionDetection.CollisionTypes.None)
                     {
                         if (Common.displayBoundingBox)
                         {
@@ -302,14 +302,16 @@ namespace Bork
                     else
                     {
                         rayLen = (float)(parent.getPosition() - rayDest).getLength();
+
+                        var singleuseExplosion = VideoProfiles.explosion();
+                        singleuseExplosion.setPosition(rayDest);
+                        registerAsSingleUseVideo(singleuseExplosion);
                     }
-                    child = new GameDisplayObject(Bork.Properties.Resources.LazerTest, CollisionDetection.CollisionTypes.None);
-                    child = parent.spawnChild(child, grid.Children, new Vec2(10, rayLen), 0);
+                    child = VideoProfiles.redLaser();
+                    child = parent.spawnChild(child, grid.Children, new Vec2(10, rayLen), 0, false, false);
                     child.setPosition((parent.getPosition() + rayDest)/2);
                     child.setScale(1, rayLen);
-                    Console.Out.WriteLine("PV  " + parent.getPosition());
-                    Console.Out.WriteLine("RDV " + rayDest);
-                    Console.Out.WriteLine("CV  " + child.getPosition());
+                    registerAsSingleUseVideo(child);
                     break;
             }
         }
@@ -367,9 +369,9 @@ namespace Bork
 
                 if (gdo.isKilled())
                 {
-                    var singleuseExplosion = new GameDisplayObject("videos/explosion", Modules.CollisionDetection.CollisionTypes.None, true, 16, 1.0/60);
+                    var singleuseExplosion = VideoProfiles.explosion();
                     singleuseExplosion.setPosition(gdo.getPosition());
-                    registerAsSingleUseVideo(singleuseExplosion, 1);
+                    registerAsSingleUseVideo(singleuseExplosion);
                     markedForDeletion.Add(gdo);
                 }
             }
