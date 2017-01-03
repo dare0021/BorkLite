@@ -153,9 +153,6 @@
     <Resource Include="videos\explosion\9.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\beam_test.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="videos\beam\0.png" />
     <Resource Include="videos\beam\1.png" />
     <Resource Include="videos\beam\2.png" />
