@@ -69,6 +69,7 @@
     <Compile Include="Helpers\Pair.cs" />
     <Compile Include="Helpers\Quad.cs" />
     <Compile Include="Helpers\ImageResourceMap.cs" />
+    <Compile Include="Helpers\SoundSystem.cs" />
     <Compile Include="Helpers\VideoProfiles.cs" />
     <Compile Include="Helpers\Vec2.cs" />
     <Compile Include="Controls\RichImage.cs" />
@@ -160,6 +161,14 @@
     <Resource Include="videos\beam\4.png" />
     <Resource Include="videos\beam\5.png" />
     <Resource Include="videos\beam\6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="sounds\hemanLong.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\hemanShort.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

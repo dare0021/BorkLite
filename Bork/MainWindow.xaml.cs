@@ -36,7 +36,8 @@ namespace Bork
 
         private GameDisplayObject beingDragged;
         private Dictionary<ulong, int> singleUseSpriteLifetimes = new Dictionary<ulong, int>();
-        private List<UIElement> markedForDeletion = new List<UIElement>();
+        private List<UIElement> objectsMarkedForDeletion = new List<UIElement>();
+        private List<SoundSystem> soundsMarkedForDeletion = new List<SoundSystem>();
         private List<UIElement> markedForAddition = new List<UIElement>();
 
         private bool mouseDown = false;
@@ -100,6 +101,8 @@ namespace Bork
             shorttermTimer.Elapsed += OnShorttermTimer;
             shorttermTimer.Start();
 
+            SoundSystem.init(canvasSounds.Children);
+
             Task.Run(() =>
             {
                 DateTime timeKeeper = DateTime.Now;
@@ -115,6 +118,8 @@ namespace Bork
 
 
             Debug.Assert(UnitTest.run());
+
+            var bgm = new SoundSystem("sounds/hemanLong.mp3", true, true);
         }
 
         private void OnLongtermTimer(object sender, ElapsedEventArgs e)
@@ -122,7 +127,8 @@ namespace Bork
             updateMutex.WaitOne();
             Dispatcher.Invoke(() =>
             {
-                processAutocull();
+                processAutocullObjects();
+                processAutocullSounds();
             });
             updateMutex.ReleaseMutex();
         }
@@ -146,11 +152,16 @@ namespace Bork
                 {
                     canvasClearEveryUpdate.Children.Clear();
                 }
-                foreach (var obj in markedForDeletion)
+                foreach (var obj in objectsMarkedForDeletion)
                 {
                     grid.Children.Remove(obj);
                 }
-                markedForDeletion.Clear();
+                objectsMarkedForDeletion.Clear();
+                foreach (var obj in soundsMarkedForDeletion)
+                {
+                    SoundSystem.getAddTo().Remove(obj);
+                }
+                soundsMarkedForDeletion.Clear();
                 foreach (var ctrl in grid.Children)
                 {
                     var gdo = ctrl as GameDisplayObject;
@@ -196,7 +207,7 @@ namespace Bork
             {
                 gdo.kill(-1 * gdo.HP);
             }
-            markedForDeletion.Add(image);
+            objectsMarkedForDeletion.Add(image);
         }
 
         public Vec2 screenToWindow(Vec2 v)
@@ -335,7 +346,7 @@ namespace Bork
         /// Ignores that extremely large sprites can be removed
         /// while still visible.
         /// </summary>
-        private void processAutocull()
+        private void processAutocullObjects()
         {
             var autocullThresh = 0.6;
             foreach (var child in grid.Children)
@@ -352,7 +363,24 @@ namespace Bork
                 var y = Math.Abs(pos.Y);
                 if (x > widthThresh || y > heightThresh)
                 {
-                    markedForDeletion.Add(ri);
+                    objectsMarkedForDeletion.Add(ri);
+                }
+            }
+        }
+
+        private void processAutocullSounds()
+        {
+            if (SoundSystem.getAddTo() == null)
+                return;
+            foreach (var child in SoundSystem.getAddTo())
+            {
+                var ss = child as SoundSystem;
+                if (ss == null
+                    || ss.AutoCull == false)
+                    continue;
+                if (ss.getState() == Common.AudioState.Done)
+                {
+                    soundsMarkedForDeletion.Add(ss);
                 }
             }
         }
@@ -372,7 +400,7 @@ namespace Bork
                     var singleuseExplosion = VideoProfiles.explosion();
                     singleuseExplosion.setPosition(gdo.getPosition());
                     registerAsSingleUseVideo(singleuseExplosion);
-                    markedForDeletion.Add(gdo);
+                    objectsMarkedForDeletion.Add(gdo);
                 }
             }
         }

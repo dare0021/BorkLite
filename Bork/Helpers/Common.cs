@@ -24,6 +24,11 @@ namespace Bork.Helpers
             Min, Avg, Max
         }
 
+        public enum AudioState
+        {
+            Stop, Pause, Play, Done
+        }
+
         /// <summary>
         /// Manual: keeps rotating according to the rotation speed set
         /// Tracking: rotates to face the target at MaxRotationSpeed

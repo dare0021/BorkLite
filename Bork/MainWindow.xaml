@@ -18,6 +18,7 @@
             </TransformGroup>
         </Grid.RenderTransform>
         <Canvas x:Name="canvasClearEveryUpdate" Background="Transparent"></Canvas>
+        <Canvas x:Name="canvasSounds" Background="Transparent"></Canvas>
         <ctrls:RichLabel x:Name="aruLabel" Content="{x:Static p:Resources.TestAru}"/>
     </Grid>
 </Window>
