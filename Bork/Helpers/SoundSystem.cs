@@ -31,7 +31,7 @@ namespace Bork.Helpers
             return addTo;
         }
 
-        public SoundSystem(string path, bool autoplay = true, bool loop = true, bool autoCull = true)
+        public SoundSystem(string path, bool autoplay = true, bool loop = false, bool autoCull = true)
         {
             LoadedBehavior = MediaState.Manual;
             // audio and video files cannot be embedded as per MS spec

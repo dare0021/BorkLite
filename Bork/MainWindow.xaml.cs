@@ -323,6 +323,7 @@ namespace Bork
                     child.setPosition((parent.getPosition() + rayDest)/2);
                     child.setScale(1, rayLen);
                     registerAsSingleUseVideo(child);
+                    var explosionSFx = new SoundSystem("sounds/hemanShort.mp3");
                     break;
             }
         }
@@ -401,6 +402,7 @@ namespace Bork
                     singleuseExplosion.setPosition(gdo.getPosition());
                     registerAsSingleUseVideo(singleuseExplosion);
                     objectsMarkedForDeletion.Add(gdo);
+                    var explosionSFx = new SoundSystem("sounds/hemanShort.mp3");
                 }
             }
         }
