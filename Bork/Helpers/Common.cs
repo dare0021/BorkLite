@@ -38,17 +38,7 @@ namespace Bork.Helpers
             Manual, Tracking, TargetRotation
         }
 
-        public static double getRadians(double degrees)
-        {
-            return degrees * Math.PI / 180;
-        }
-
-        public static double getDegrees(double radians)
-        {
-            return radians * 180 / Math.PI;
-        }
-
-        public static Vec2 rotateVector(Vec2 vect, double radians)
+        public static Vec2 rotateVector(Vec2 vect, Radian radians)
         {
             return new Vec2(Math.Cos(radians) * vect.X - Math.Sin(radians) * vect.Y,
                             Math.Sin(radians) * vect.X + Math.Cos(radians) * vect.Y);
@@ -71,11 +61,11 @@ namespace Bork.Helpers
         /// <param name="pivot"></param>
         /// <param name="point"></param>
         /// <returns></returns>
-        public static double getAngleBetween(Vec2 point, Vec2 pivot)
+        public static Degree getAngleBetween(Vec2 point, Vec2 pivot)
         {
             // X and Y positions inverted since we're using heading (CW)
             // when Math.Atan2() assumes CCW
-            return Common.getDegrees(Math.Atan2(point.X - pivot.X, point.Y - pivot.Y));
+            return new Degree(Math.Atan2(point.X - pivot.X, point.Y - pivot.Y) * 180 / Math.PI);
         }
 
         public static ulong getNewUID()
@@ -93,6 +83,21 @@ namespace Bork.Helpers
         public static DateTime timestampToDateTime(int ts)
         {
             return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(ts).ToLocalTime();
+        }
+
+        public static double Sin(Radian x)
+        {
+            return Math.Sin(x);
+        }
+
+        public static double Cos(Radian x)
+        {
+            return Math.Cos(x);
+        }
+
+        public static double Tan(Radian x)
+        {
+            return Math.Tan(x);
         }
     }
 }

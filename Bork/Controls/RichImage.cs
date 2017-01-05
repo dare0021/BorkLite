@@ -132,11 +132,11 @@ namespace Bork.Controls
             Canvas.SetZIndex(this, z);
         }
 
-        public double getRotation()
+        public Degree getRotation()
         {
-            return -rotateTransform.Angle;
+            return new Degree(-rotateTransform.Angle);
         }
-        public void setRotation(double v)
+        public void setRotation(Degree v)
         {
             rotateTransform.Angle = -v;
         }
@@ -195,7 +195,7 @@ namespace Bork.Controls
             var vect1 = new Vec2(x0, y1);
             var vect2 = new Vec2(x1, y1);
             var vect3 = new Vec2(x1, y0);
-            var rotRad = Common.getRadians(getRotation());
+            Radian rotRad = getRotation();
             if (getInWorld)
                 rotRad *= -1;
             vect0 = Common.rotateVector(vect0, rotRad);

@@ -19,7 +19,7 @@ namespace Bork.Controls
             RotationMode = Common.RotationMode.Manual;
 
             MaxSpeed = double.MaxValue;
-            MaxRotationSpeed = double.MaxValue;
+            MaxRotationSpeed = new Degree(double.MaxValue);
             Allegiance = "";
 
             CollisionType = collisionType;
@@ -47,8 +47,8 @@ namespace Bork.Controls
                 var dr = Common.getAngleBetween(getPosition(), TrackingTarget.getPosition());
                 var target1 = dr + 180;
                 var target2 = dr - 180;
-                RotationTarget = Math.Abs(rotation - target1) < Math.Abs(rotation - target2) ?
-                                    target1 : target2;
+                RotationTarget = new Degree(Math.Abs(rotation - target1) < Math.Abs(rotation - target2) ?
+                                    target1 : target2);
             }
             if (RotationMode == Common.RotationMode.TargetRotation|| RotationMode == Common.RotationMode.Tracking)
             {
@@ -56,8 +56,8 @@ namespace Bork.Controls
             }
 
             var effectiveSpeed = Speed * dt;
-            var dx = effectiveSpeed * Math.Sin(rotation * Math.PI / 180);
-            var dy = effectiveSpeed * Math.Cos(rotation * Math.PI / 180);
+            var dx = effectiveSpeed * Common.Sin(rotation);
+            var dy = effectiveSpeed * Common.Cos(rotation);
             var effectiveRotationSpeed = RotationSpeed * dt; 
             setPosition(getPosition() + new Vec2(dx, dy));
             setRotation(rotation + effectiveRotationSpeed);
@@ -88,8 +88,8 @@ namespace Bork.Controls
                 }
             }
         }
-        private double rotationSpeed;
-        public double RotationSpeed
+        private Degree rotationSpeed = new Degree(0);
+        public Degree RotationSpeed
         {
             get
             {
@@ -100,7 +100,7 @@ namespace Bork.Controls
                 if (value > MaxRotationSpeed)
                     value = MaxRotationSpeed;
                 if (value < -MaxRotationSpeed)
-                    value = -MaxRotationSpeed;
+                    value = -1 * MaxRotationSpeed;
                 rotationSpeed = value;
             }
         }
@@ -120,9 +120,9 @@ namespace Bork.Controls
             }
         }
         public double MaxSpeed { get; set; }
-        public double MaxRotationSpeed { get; set; }
+        public Degree MaxRotationSpeed { get; set; }
         public double MaxHP { get; set; }
-        public double RotationTarget { get; set; }
+        public Degree RotationTarget { get; set; }
 
         private RichImage trackingTarget;
         public RichImage TrackingTarget

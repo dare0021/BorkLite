@@ -72,7 +72,7 @@ namespace Bork
             iter2.setSize(iter2.Source.Width / 10, iter2.Source.Height / 10);
             grid.Children.Add(iter2);
             iter2.Speed = 5;
-            iter2.MaxRotationSpeed = 5;
+            iter2.MaxRotationSpeed = new Degree(5);
             iter2.RotationMode = Common.RotationMode.Tracking;
 
             var animtest = new GameDisplayObject("videos/deathAnimationDummy", Modules.CollisionDetection.CollisionTypes.Ship, true, 4, 0.5, 1);
@@ -306,8 +306,8 @@ namespace Bork
                     if (collisionObj == null)
                     {
                         rayDest = new Vec2(0, 0);
-                        rayDest.X = rayLen * Math.Sin(parent.getRotation() * Math.PI / 180);
-                        rayDest.Y = rayLen * Math.Cos(parent.getRotation() * Math.PI / 180);
+                        rayDest.X = rayLen * Common.Sin(parent.getRotation());
+                        rayDest.Y = rayLen * Common.Cos(parent.getRotation());
                         rayDest += parent.getPosition();
                     }
                     else
@@ -317,13 +317,13 @@ namespace Bork
                         var singleuseExplosion = VideoProfiles.explosion();
                         singleuseExplosion.setPosition(rayDest);
                         registerAsSingleUseVideo(singleuseExplosion);
+                        var explosionSFx = new SoundSystem("sounds/hemanShort.mp3");
                     }
                     child = VideoProfiles.redLaser();
                     child = parent.spawnChild(child, grid.Children, new Vec2(10, rayLen), 0, false, false);
                     child.setPosition((parent.getPosition() + rayDest)/2);
                     child.setScale(1, rayLen);
                     registerAsSingleUseVideo(child);
-                    var explosionSFx = new SoundSystem("sounds/hemanShort.mp3");
                     break;
             }
         }

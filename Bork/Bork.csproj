@@ -65,10 +65,12 @@
     <Compile Include="Helpers\AnimationProfile.cs" />
     <Compile Include="Helpers\Common.cs" />
     <Compile Include="Controls\RichLabel.cs" />
+    <Compile Include="Helpers\Degree.cs" />
     <Compile Include="Helpers\ImageResourceMaster.cs" />
     <Compile Include="Helpers\Pair.cs" />
     <Compile Include="Helpers\Quad.cs" />
     <Compile Include="Helpers\ImageResourceMap.cs" />
+    <Compile Include="Helpers\Radian.cs" />
     <Compile Include="Helpers\SoundSystem.cs" />
     <Compile Include="Helpers\VideoProfiles.cs" />
     <Compile Include="Helpers\Vec2.cs" />
