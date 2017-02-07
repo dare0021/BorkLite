@@ -34,7 +34,8 @@ namespace Bork.Helpers
         public SoundSystem(string path, bool autoplay = true, bool loop = false, bool autoCull = true)
         {
             LoadedBehavior = MediaState.Manual;
-            // audio and video files cannot be embedded as per MS spec
+            // audio and video files cannot be embedded in the program as per MS spec
+            // can only be reference as separate files
             Source = new Uri(path, UriKind.Relative);
             addTo.Add(this);
 
