@@ -120,10 +120,6 @@ namespace Bork
             Debug.Assert(UnitTest.run());
 
             var bgm = new SoundSystem("sounds/hemanLong.mp3", true, true);
-
-            var jsontest = Common.FileReadAllLines("data/jsontest.json");
-            foreach (var s in jsontest)
-                Console.WriteLine(s);
         }
 
         private void OnLongtermTimer(object sender, ElapsedEventArgs e)

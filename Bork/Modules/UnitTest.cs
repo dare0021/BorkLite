@@ -49,7 +49,26 @@ namespace Bork.Modules
             set4Vec2(out a1, out a2, out b1, out b2, 0, -1, 0, 1, -1, 0, 1, 0);
             test(CollisionDetection.LineSegementsIntersect(a1, a2, b1, b2, out output));
 
+            test(jsonTest("data/jsontest.json"));
+
             return !fail;
+        }
+
+        /// <summary>
+        /// Obviously hard coded and not thorough
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        static public bool jsonTest(string path)
+        {
+            var jsontest = Common.FileReadAllLines(path);
+            foreach (var s in jsontest)
+                Console.WriteLine(s);
+
+            var json = Common.FileReadJson(path);
+            Console.WriteLine(json["objkobj"]["objkarr"][6]);
+
+            return true;
         }
     }
 }

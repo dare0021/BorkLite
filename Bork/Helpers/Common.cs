@@ -111,5 +111,15 @@ namespace Bork.Helpers
             }
             return output;
         }
+
+        public static Newtonsoft.Json.Linq.JObject FileReadJson(string path)
+        {
+            string jsonString = "";
+            foreach (var s in FileReadAllLines(path))
+            {
+                jsonString += s + "\n";
+            }
+            return Newtonsoft.Json.Linq.JObject.Parse(jsonString);
+        }
     }
 }
