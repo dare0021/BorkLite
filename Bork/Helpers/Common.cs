@@ -112,6 +112,15 @@ namespace Bork.Helpers
             return output;
         }
 
+        public static void FileWriteAllLines(string path, params string[] data)
+        {
+            using (StreamWriter f = new StreamWriter(path))
+            {
+                foreach (var s in data)
+                    f.WriteLine(s);
+            }
+        }
+
         public static Newtonsoft.Json.Linq.JObject FileReadJson(string path)
         {
             string jsonString = "";
@@ -120,6 +129,15 @@ namespace Bork.Helpers
                 jsonString += s + "\n";
             }
             return Newtonsoft.Json.Linq.JObject.Parse(jsonString);
+        }
+
+        public static void FileWriteJson(string path, Object input, bool compact = false)
+        {
+            var format = Newtonsoft.Json.Formatting.Indented;
+            if (compact)
+                format = Newtonsoft.Json.Formatting.None;
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(input, format);
+            FileWriteAllLines(path, jsonString);
         }
     }
 }
