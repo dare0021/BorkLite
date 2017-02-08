@@ -66,6 +66,7 @@
     <Compile Include="Helpers\Common.cs" />
     <Compile Include="Controls\RichLabel.cs" />
     <Compile Include="Helpers\Degree.cs" />
+    <Compile Include="Helpers\FileHandling.cs" />
     <Compile Include="Helpers\ImageResourceMaster.cs" />
     <Compile Include="Helpers\Pair.cs" />
     <Compile Include="Helpers\Quad.cs" />
@@ -109,6 +110,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="data\jsontest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="data\testShip.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

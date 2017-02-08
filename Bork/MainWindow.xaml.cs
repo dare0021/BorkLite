@@ -120,6 +120,9 @@ namespace Bork
             Debug.Assert(UnitTest.run());
 
             var bgm = new SoundSystem("sounds/hemanLong.mp3", true, true);
+
+            var testJsonImport = FileHandling.JsonToGdo("data/testShip.json");
+            grid.Children.Add(testJsonImport);
         }
 
         private void OnLongtermTimer(object sender, ElapsedEventArgs e)

@@ -32,6 +32,11 @@ namespace Bork.Helpers
             }
         }
 
+        public static JObject ParseJson(string json)
+        {
+            return JObject.Parse(json);
+        }
+
         public static JObject FileReadJson(string path)
         {
             string jsonString = "";
@@ -60,10 +65,84 @@ namespace Bork.Helpers
             FileWriteAllLines(path, jsonString);
         }
 
-        public static JObject GdoToJson(Controls.GameDisplayObject gdo)
+        public static Controls.GameDisplayObject JsonToGdo(string path)
         {
-            string output = "";
+            return JsonToGdo(FileReadJson(path));
+        }
+
+        /// <summary>
+        /// Expand later to use specific objects' separate creation functions
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static Controls.GameDisplayObject JsonToGdo(JObject json)
+        {
+            var collisionType = Modules.CollisionDetection.CollisionTypes.None;
+            var val = json["collisionType"];
+            if (val != null)
+            {
+                switch (val.ToString().ToLower())
+                {
+                    case "none":
+                        break;
+                    case "projectile":
+                        collisionType = Modules.CollisionDetection.CollisionTypes.Projectile;
+                        break;
+                    case "ship":
+                        collisionType = Modules.CollisionDetection.CollisionTypes.Ship;
+                        break;
+                    default:
+                        throw new NotImplementedException("non existent collision type");
+                }
+                    
+            }
+            
+            var animated = false;
+            val = json["animated"];
+            if (val != null)
+                animated = (bool)val;
+            
+            int frameCount = 0;
+            val = json["frameCount"];
+            if (val != null)
+                frameCount = (int)val;
+
+            double duration = 0;
+            val = json["duration"];
+            if (val != null)
+                duration = (double)val;
+
+            int from = 0;
+            val = json["from"];
+            if (val != null)
+                from = (int)val;
+
+            var output = new Controls.GameDisplayObject(json["path"].ToString(), collisionType, animated, frameCount, duration, from);
             return output;
+        }
+
+/*        public static string GdoToJson(Controls.GameDisplayObject gdo)
+        {
+            StringWriter sw = new StringWriter();
+            JsonTextWriter writer = new JsonTextWriter(sw);
+            writer.WriteStartObject();
+
+            writer.WriteEndObject();
+            return sw.ToString();
+        }*/
+
+        private static void addKVP(JsonTextWriter writer, string key, Object value)
+        {
+            writer.WritePropertyName(key);
+            writer.WriteValue(value);
+        }
+
+        private static void addArray<T>(JsonTextWriter writer, ICollection<T> collection)
+        {
+            writer.WriteStartArray();
+            foreach (var item in collection)
+                writer.WriteValue(item);
+            writer.WriteEndArray();
         }
     }
 }
