@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.IO;
 
 namespace Bork.Helpers
 {
@@ -99,45 +98,6 @@ namespace Bork.Helpers
         public static double Tan(Radian x)
         {
             return Math.Tan(x);
-        }
-
-        public static List<string> FileReadAllLines(string path)
-        {
-            var output = new List<string>();
-            using (StreamReader f = new StreamReader(path))
-            {
-                while (!f.EndOfStream)
-                    output.Add(f.ReadLine());
-            }
-            return output;
-        }
-
-        public static void FileWriteAllLines(string path, params string[] data)
-        {
-            using (StreamWriter f = new StreamWriter(path))
-            {
-                foreach (var s in data)
-                    f.WriteLine(s);
-            }
-        }
-
-        public static Newtonsoft.Json.Linq.JObject FileReadJson(string path)
-        {
-            string jsonString = "";
-            foreach (var s in FileReadAllLines(path))
-            {
-                jsonString += s + "\n";
-            }
-            return Newtonsoft.Json.Linq.JObject.Parse(jsonString);
-        }
-
-        public static void FileWriteJson(string path, Object input, bool compact = false)
-        {
-            var format = Newtonsoft.Json.Formatting.Indented;
-            if (compact)
-                format = Newtonsoft.Json.Formatting.None;
-            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(input, format);
-            FileWriteAllLines(path, jsonString);
         }
     }
 }

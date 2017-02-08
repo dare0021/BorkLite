@@ -61,11 +61,11 @@ namespace Bork.Modules
         /// <returns></returns>
         static public bool jsonTest(string path)
         {
-            var jsontest = Common.FileReadAllLines(path);
+            var jsontest = FileHandling.FileReadAllLines(path);
             foreach (var s in jsontest)
                 Console.WriteLine(s);
 
-            var json = Common.FileReadJson(path);
+            var json = FileHandling.FileReadJson(path);
             Console.WriteLine(json["objkobj"]["objkarr"][6]);
 
             return true;
