@@ -1,0 +1,16 @@
+{
+	"objkstr" : "objv1",
+	"objknum" : 1234,
+	"objkt" : true,
+	"objkf" : false,
+	"objkn" : null,
+	"objkarr" : [1,2,3,"456", "abc", "유니코드", "cp949じゃない", true, false, null],
+	"objkobj" :	{
+		"objkstr" : "objv1",
+		"objknum" : 1234,
+		"objkt" : true,
+		"objkf" : false,
+		"objkn" : null,
+		"objkarr" : [1,2,3,"456", "abc", "유니코드", "cp949じゃない", true, false, null]
+		}
+}

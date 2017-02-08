@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.IO;
 
 namespace Bork.Helpers
 {
@@ -98,6 +99,17 @@ namespace Bork.Helpers
         public static double Tan(Radian x)
         {
             return Math.Tan(x);
+        }
+
+        public static List<string> FileReadAllLines(string path)
+        {
+            var output = new List<string>();
+            using (StreamReader f = new StreamReader(path))
+            {
+                while (!f.EndOfStream)
+                    output.Add(f.ReadLine());
+            }
+            return output;
         }
     }
 }
