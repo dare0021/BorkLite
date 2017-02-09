@@ -15,6 +15,7 @@
     "position": [ 100, 100 ]
   },
   "explosion": {
-    "position": [50,50]
+    "position": [50,50],
+	"type": "explosion"
   }
 }

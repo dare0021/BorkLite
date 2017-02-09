@@ -85,30 +85,29 @@ namespace Bork.Helpers
             {
                 RichImage ri = null;
                 var keyString = key.Name;
-                var type = key.Value["type"];
-                if (type == null)
+                var type = ((string)key.Value["type"]).ToLower();
+                var typeString = ((string)type).ToLower();
+                switch (typeString)
                 {
-                    foreach (var method in methods)
-                    {
-                        if (keyString.Equals(method.Name))
+                    case "ri":
+                        ri = LoadRiFromJson(JObject.Parse(key.Value.ToString()));
+                        break;
+                    case "gdo":
+                        throw new ArgumentException("GDO should utilize RichImageProfiles.cs");
+                    default:
+                        bool noerr = false;
+                        foreach (var method in methods)
                         {
-                            ri = (GameDisplayObject)method.Invoke(null, null);
+                            if (keyString.Equals(method.Name))
+                            {
+                                ri = (GameDisplayObject)method.Invoke(null, null);
+                                noerr = true;
+                                break;
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    var typeString = ((string)type).ToLower();
-                    switch (typeString)
-                    {
-                        case "ri":
-                            ri = LoadRiFromJson(JObject.Parse(key.Value.ToString()));
+                        if (noerr)
                             break;
-                        case "gdo":
-                            throw new ArgumentException("GDO should utilize RichImageProfiles.cs");
-                        default:
-                            throw new NotImplementedException("Unknown object type during JSON load");
-                    }
+                        throw new NotImplementedException("Unknown object type during JSON load");
                 }
 
                 if (key.Value["position"] != null)
