@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bork.Helpers
 {
-    static class VideoProfiles
+    static class RichImageProfiles
     {
         static public GameDisplayObject explosion()
         {

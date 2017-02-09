@@ -317,12 +317,12 @@ namespace Bork
                     {
                         rayLen = (float)(parent.getPosition() - rayDest).getLength();
 
-                        var singleuseExplosion = VideoProfiles.explosion();
+                        var singleuseExplosion = RichImageProfiles.explosion();
                         singleuseExplosion.setPosition(rayDest);
                         registerAsSingleUseVideo(singleuseExplosion);
                         var explosionSFx = new SoundSystem("sounds/hemanShort.mp3");
                     }
-                    child = VideoProfiles.redLaser();
+                    child = RichImageProfiles.redLaser();
                     child = parent.spawnChild(child, grid.Children, new Vec2(10, rayLen), 0, false, false);
                     child.setPosition((parent.getPosition() + rayDest)/2);
                     child.setScale(1, rayLen);
@@ -401,7 +401,7 @@ namespace Bork
 
                 if (gdo.isKilled())
                 {
-                    var singleuseExplosion = VideoProfiles.explosion();
+                    var singleuseExplosion = RichImageProfiles.explosion();
                     singleuseExplosion.setPosition(gdo.getPosition());
                     registerAsSingleUseVideo(singleuseExplosion);
                     objectsMarkedForDeletion.Add(gdo);

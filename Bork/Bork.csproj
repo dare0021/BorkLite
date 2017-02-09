@@ -73,7 +73,7 @@
     <Compile Include="Helpers\ImageResourceMap.cs" />
     <Compile Include="Helpers\Radian.cs" />
     <Compile Include="Helpers\SoundSystem.cs" />
-    <Compile Include="Helpers\VideoProfiles.cs" />
+    <Compile Include="Helpers\RichImageProfiles.cs" />
     <Compile Include="Helpers\Vec2.cs" />
     <Compile Include="Controls\RichImage.cs" />
     <Page Include="MainWindow.xaml">
