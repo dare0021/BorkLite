@@ -112,7 +112,7 @@
     <None Include="data\jsontest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="data\testShip.json">
+    <None Include="data\testLevel.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -172,6 +172,11 @@
     <Resource Include="videos\beam\6.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\testLevel\shrubbery.png" />
+    <Resource Include="images\testLevel\animation\0.png" />
+    <Resource Include="images\testLevel\animation\1.png" />
+    <Resource Include="images\testLevel\animation\2.png" />
+    <Resource Include="images\testLevel\animation\3.png" />
     <Content Include="sounds\hemanLong.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

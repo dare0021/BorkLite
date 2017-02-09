@@ -121,8 +121,9 @@ namespace Bork
 
             var bgm = new SoundSystem("sounds/hemanLong.mp3", true, true);
 
-            var testJsonImport = FileHandling.JsonToGdo("data/testShip.json");
-            grid.Children.Add(testJsonImport);
+            var testJsonImport = FileHandling.LoadLevelFromJson("data/testLevel.json");
+            foreach (var c in testJsonImport)
+                grid.Children.Add(c);
         }
 
         private void OnLongtermTimer(object sender, ElapsedEventArgs e)

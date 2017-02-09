@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
+using Bork.Controls;
 
 namespace Bork.Helpers
 {
@@ -65,43 +67,88 @@ namespace Bork.Helpers
             FileWriteAllLines(path, jsonString);
         }
 
-        public static Controls.GameDisplayObject JsonToGdo(string path)
+        public static List<RichImage> LoadLevelFromJson(string path)
         {
-            return JsonToGdo(FileReadJson(path));
+            return LoadLevelFromJson(FileReadJson(path));
         }
 
         /// <summary>
-        /// Expand later to use specific objects' separate creation functions
+        /// If necessary expand to process arguments for RichImageProfile functions
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static Controls.GameDisplayObject JsonToGdo(JObject json)
+        public static List<RichImage> LoadLevelFromJson(JObject json)
         {
-            var collisionType = Modules.CollisionDetection.CollisionTypes.None;
-            var val = json["collisionType"];
-            if (val != null)
+            var output = new List<RichImage>();
+            var methods = typeof(RichImageProfiles).GetMethods();
+            foreach (var key in json.Properties())
             {
-                switch (val.ToString().ToLower())
+                RichImage ri = null;
+                var keyString = key.Name;
+                var type = key.Value["type"];
+                if (type == null)
                 {
-                    case "none":
-                        break;
-                    case "projectile":
-                        collisionType = Modules.CollisionDetection.CollisionTypes.Projectile;
-                        break;
-                    case "ship":
-                        collisionType = Modules.CollisionDetection.CollisionTypes.Ship;
-                        break;
-                    default:
-                        throw new NotImplementedException("non existent collision type");
+                    foreach (var method in methods)
+                    {
+                        if (keyString.Equals(method.Name))
+                        {
+                            ri = (GameDisplayObject)method.Invoke(null, null);
+                        }
+                    }
                 }
-                    
+                else
+                {
+                    var typeString = ((string)type).ToLower();
+                    switch (typeString)
+                    {
+                        case "ri":
+                            ri = LoadRiFromJson(JObject.Parse(key.Value.ToString()));
+                            break;
+                        case "gdo":
+                            throw new ArgumentException("GDO should utilize RichImageProfiles.cs");
+                        default:
+                            throw new NotImplementedException("Unknown object type during JSON load");
+                    }
+                }
+
+                if (key.Value["position"] != null)
+                {
+                    var posX = (double)key.Value["position"][0];
+                    var posY = (double)key.Value["position"][1];
+                    ri.setPosition(posX, posY);
+                }
+
+                if (key.Value["scale"] != null)
+                {
+                    var sX = (double)key.Value["scale"][0];
+                    var sY = (double)key.Value["scale"][1];
+                    ri.setScale(sX, sY);
+                }
+
+                var rot = key.Value["rotation"];
+                if (rot != null)
+                {
+                    ri.setRotation(new Degree((double)rot));
+                }
+
+                output.Add(ri);
             }
-            
+            return output;
+        }
+
+        /// <summary>
+        /// Avoid if at all possible
+        /// Use RichImageProfiles.cs instead
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static RichImage LoadRiFromJson(JObject json)
+        {
             var animated = false;
-            val = json["animated"];
+            var val = json["animated"];
             if (val != null)
                 animated = (bool)val;
-            
+
             int frameCount = 0;
             val = json["frameCount"];
             if (val != null)
@@ -111,13 +158,19 @@ namespace Bork.Helpers
             val = json["duration"];
             if (val != null)
                 duration = (double)val;
+            else
+            {
+                val = json["frameRate"];
+                if (val != null)
+                    duration = 1.0 / (double)val;
+            }
 
             int from = 0;
             val = json["from"];
             if (val != null)
                 from = (int)val;
 
-            var output = new Controls.GameDisplayObject(json["path"].ToString(), collisionType, animated, frameCount, duration, from);
+            var output = new RichImage(json["path"].ToString(), animated, frameCount, duration, from);
             return output;
         }
 

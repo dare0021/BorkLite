@@ -1,0 +1,20 @@
+{
+  "shrubbery": {
+    "path": "images/testLevel/shrubbery.png",
+    "type": "RI",
+    "position": [-100,-100],
+    "rotation": 45,
+    "scale": [ 0.5, 0.2 ]
+  },
+  "animated": {
+    "path": "images/testLevel/animation",
+    "type": "RI",
+    "animated": true,
+    "frameCount": 4,
+    "frameRate": 10,
+    "position": [ 100, 100 ]
+  },
+  "explosion": {
+    "position": [50,50]
+  }
+}

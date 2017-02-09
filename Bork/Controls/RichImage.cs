@@ -44,7 +44,6 @@ namespace Bork.Controls
             id = Common.getNewUID();
 
             RadiusType = Common.RadiusMode.Min;
-            IsSingleUse = false;
 
             if (!animated)
             {
@@ -270,7 +269,6 @@ namespace Bork.Controls
         }
         
         public Common.RadiusMode RadiusType { get; set; }
-        public bool IsSingleUse { get; set; }
         
         /// <summary>
         /// Remove when off screen
