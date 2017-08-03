@@ -66,7 +66,16 @@ namespace Bork
                 iter.setSize(32, 32);
                 grid.Children.Add(iter);
             }
-            var iter2 = new GameDisplayObject(Bork.Properties.Resources.DummyImg2, Modules.CollisionDetection.CollisionTypes.Ship);
+            #region sprite stress test
+            //for (int i = 0; i < 256; i++)
+            //{
+            //    var item = new GameDisplayObject("videos/explosion/", Modules.CollisionDetection.CollisionTypes.Ship, true, 16, 1.0/60);
+            //    item.setPosition(rng.Next((int)(Width / -2), (int)(Width / 2)),
+            //                 rng.Next((int)(Height / -2), (int)(Height / 2)));
+            //    grid.Children.Add(item);
+            //}
+            #endregion
+            var iter2 = new GameDisplayObject("videos/deathAnimationDummy", Modules.CollisionDetection.CollisionTypes.Ship, true, 4, 0.5, 1);
             iter2.setPosition(rng.Next((int)(Width / -2), (int)(Width / 2)),
                              rng.Next((int)(Height / -2), (int)(Height / 2)));
             iter2.setSize(iter2.Source.Width / 10, iter2.Source.Height / 10);
